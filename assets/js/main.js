@@ -89,6 +89,10 @@ class Platform extends GenericObject
 	}
 }
 
+const player = new Player();
+
+player.update();
+
 
 function animate()
 {
