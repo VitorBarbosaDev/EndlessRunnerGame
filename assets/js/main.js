@@ -8,6 +8,35 @@ const c = canvas.getContext('2d');
 canvas.width  = 1024;
 canvas.height = 576;
 
+class Player {
+	
+}
+
+class GenericObject
+{
+	constructor({x, y, image})
+	{
+		this.position = {x: x, y: y};
+		this.image    = image;
+		this.width    = image.width;
+		this.height   = image.height;
+	}
+	
+	draw()
+	{
+		c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+	}
+}
+
+class Platform extends GenericObject
+{
+	constructor({x, y, image})
+	{
+		super({x, y, image});
+	}
+}
+
+
 function animate()
 {
 	c.fillStyle = 'white';
