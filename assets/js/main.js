@@ -11,7 +11,8 @@ canvas.height = 576;
 // Define the gravity constant for the game
 const gravity = .5;
 
-class Player {
+class Player
+{
 	constructor()
 	{
 		// Initialize the player's position, velocity, dimensions, and color
@@ -30,7 +31,8 @@ class Player {
 	}
 	
 	// the update method to update the player's position and velocity
-	update(){
+	update()
+	{
 		this.draw();
 		this.position.y += this.velocity.y;
 		this.position.x += this.velocity.x;
@@ -38,7 +40,8 @@ class Player {
 		this.checkBounds();
 	}
 	
-	checkBounds(){
+	checkBounds()
+	{
 		// Define the padding
 		const padding = 5;
 		
@@ -67,29 +70,35 @@ class Player {
 
 class GenericObject
 {
-	constructor({x, y, image})
+	constructor({x, y, color, width, height})
 	{
 		this.position = {x: x, y: y};
-		this.image    = image;
-		this.width    = image.width;
-		this.height   = image.height;
+		this.color    = color;
+		this.width    = width;
+		this.height   = height;
 	}
 	
 	draw()
 	{
-		c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+		c.fillStyle = this.color;
+		c.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
+	
 }
 
-class Platform extends GenericObject
+class obstacle extends GenericObject
 {
-	constructor({x, y, image})
+	constructor({x, y, color, width, height})
 	{
-		super({x, y, image});
+		super({x, y, color, width, height});
 	}
 }
 
 const player = new Player();
+
+const obstacles = [new obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100}),
+	new obstacle({x: 300, y: 0, color: 'red', width: 100, height: 130}),
+	new obstacle({x: 300, y: 450, color: 'green', width: 100, height: 230})];
 
 player.update();
 
@@ -102,6 +111,9 @@ function animate()
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	//update the players state
 	player.update();
+	
+	// Draw the obstacles
+	obstacles.forEach(obstacle => {obstacle.draw();});
 }
 
 animate();
@@ -112,5 +124,5 @@ window.addEventListener('keydown', (event) =>
 	if (event.code === 'Space')
 		{
 			player.velocity.y = -10;
-		} 
+		}
 });
