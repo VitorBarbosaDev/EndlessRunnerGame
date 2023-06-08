@@ -70,12 +70,13 @@ class Player
 
 class GenericObject
 {
-	constructor({x, y, color, width, height})
+	constructor({x, y, color, width, height, velocity})
 	{
 		this.position = {x: x, y: y};
 		this.color    = color;
 		this.width    = width;
 		this.height   = height;
+		this.velocity = velocity || 0; 
 	}
 	
 	draw()
@@ -84,21 +85,32 @@ class GenericObject
 		c.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
 	
-}
-
-class obstacle extends GenericObject
-{
-	constructor({x, y, color, width, height})
+	update() 
 	{
-		super({x, y, color, width, height});
+		this.position.x -= this.velocity; // Subtract the velocity from the x-position
+		if(this.position.x < -this.width) // If the object is off the left side of the canvas
+			{
+				this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
+			}
+		this.draw();
 	}
 }
 
-const player = new Player();
+class Obstacle extends GenericObject
+{
+	constructor({x, y, color, width, height, velocity})
+	{
+		super({x, y, color, width, height, velocity});
+	}
+}
 
-const obstacles = [new obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100}),
-	new obstacle({x: 300, y: 0, color: 'red', width: 100, height: 130}),
-	new obstacle({x: 300, y: 450, color: 'green', width: 100, height: 230})];
+const obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 2}),
+	new Obstacle({x: 300, y: 0, color: 'red', width: 100, height: 130, velocity: 2}),
+	new Obstacle({x: 300, y: 450, color: 'green', width: 100, height: 230, velocity: 2})];
+
+
+const player = new Player();
+ 
 
 player.update();
 
@@ -113,7 +125,7 @@ function animate()
 	player.update();
 	
 	// Draw the obstacles
-	obstacles.forEach(obstacle => {obstacle.draw();});
+	obstacles.forEach(obstacle => {obstacle.update();});
 }
 
 animate();
