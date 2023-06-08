@@ -105,3 +105,12 @@ function animate()
 }
 
 animate();
+
+window.addEventListener('keydown', (event) =>
+{
+	// If the player presses the space bar, jump
+	if (event.code === 'Space')
+		{
+			player.velocity.y = -10;
+		} 
+});
