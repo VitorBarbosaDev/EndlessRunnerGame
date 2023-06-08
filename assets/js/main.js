@@ -96,8 +96,12 @@ player.update();
 
 function animate()
 {
+	// Request the next animation frame
+	requestAnimationFrame(animate);
 	c.fillStyle = 'white';
 	c.fillRect(0, 0, canvas.width, canvas.height);
+	//update the players state
+	player.update();
 }
 
 animate();
