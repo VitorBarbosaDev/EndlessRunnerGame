@@ -18,6 +18,22 @@ class Player {
 		this.height   = 30;
 		this.color    = 'green';
 	}
+	
+	// the draw method to draw the player on the canvas
+	draw()
+	{
+		c.fillStyle = this.color;
+		c.fillRect(this.position.x, this.position.y, this.width, this.height);
+	}
+	
+	// the update method to update the player's position and velocity
+	update(){
+		this.draw();
+		this.position.y += this.velocity.y;
+		this.position.x += this.velocity.x;
+		
+		
+	}
 }
 
 class GenericObject
