@@ -9,7 +9,15 @@ canvas.width  = 1024;
 canvas.height = 576;
 
 class Player {
-	
+	constructor()
+	{
+		// Initialize the player's position, velocity, dimensions, and color
+		this.position = {x: 100, y: 100};
+		this.velocity = {x: 0, y: 0};
+		this.width    = 30;
+		this.height   = 30;
+		this.color    = 'green';
+	}
 }
 
 class GenericObject
