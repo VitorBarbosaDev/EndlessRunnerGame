@@ -66,6 +66,18 @@ class Player
 				this.velocity.x = 0;
 			}
 	}
+	
+	checkCollision(obstacle)
+	{
+		if (this.position.x < obstacle.position.x + obstacle.width &&
+			this.position.x + this.width > obstacle.position.x &&
+			this.position.y < obstacle.position.y + obstacle.height &&
+			this.position.y + this.height > obstacle.position.y)
+			{
+				// Collision detected, reset player's position
+				this.position = {x: 100, y: 100};
+			}
+	}
 }
 
 class GenericObject
@@ -92,6 +104,7 @@ class GenericObject
 			{
 				this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
 			}
+		
 		this.draw();
 	}
 }
@@ -104,7 +117,7 @@ class Obstacle extends GenericObject
 	}
 }
 
-const obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 2}),
+const obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 3 }),
 	new Obstacle({x: 300, y: 0, color: 'red', width: 100, height: 130, velocity: 2}),
 	new Obstacle({x: 300, y: 450, color: 'green', width: 100, height: 230, velocity: 2})];
 
@@ -125,7 +138,8 @@ function animate()
 	player.update();
 	
 	// Draw the obstacles
-	obstacles.forEach(obstacle => {obstacle.update();});
+	obstacles.forEach(obstacle => {obstacle.update();
+	player.checkCollision(obstacle);});
 }
 
 animate();
@@ -137,4 +151,10 @@ window.addEventListener('keydown', (event) =>
 		{
 			player.velocity.y = -10;
 		}
+});
+// Add an event listener for mouse clicks on the canvas
+canvas.addEventListener('click', () =>
+{
+	// Jump
+	player.velocity.y = -10;
 });
