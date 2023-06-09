@@ -11,6 +11,8 @@ canvas.height = 576;
 // Define the gravity constant for the game
 const gravity = .5;
 
+let score = 0;
+let gameStarted = false;
 class Player
 {
 	constructor()
@@ -44,7 +46,10 @@ class Player
 	{
 		// Define the padding
 		const padding = 5;
-		
+		if(!gameStarted){
+			this.position.x = 200;
+			this.position.y = 250;
+		}
 		// If the player is not at the bottom of the canvas, apply gravity
 		if (this.position.y + this.height + this.velocity.y <= canvas.height)
 			{
@@ -99,12 +104,15 @@ class GenericObject
 	
 	update() 
 	{
-		this.position.x -= this.velocity; // Subtract the velocity from the x-position
-		if(this.position.x < -this.width) // If the object is off the left side of the canvas
+		if(gameStarted)
 			{
-				this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
+				
+				this.position.x -= this.velocity; // Subtract the velocity from the x-position
+				if (this.position.x < -this.width) // If the object is off the left side of the canvas
+					{
+						this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
+					}
 			}
-		
 		this.draw();
 	}
 }
@@ -155,6 +163,9 @@ window.addEventListener('keydown', (event) =>
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
 {
+	if(!gameStarted){
+		gameStarted = true;
+	}
 	// Jump
 	player.velocity.y = -10;
 });
