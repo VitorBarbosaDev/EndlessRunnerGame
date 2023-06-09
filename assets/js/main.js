@@ -290,6 +290,38 @@ const player = new Player();
 player.update();
 
 resetGame();
+function resetGame() {
+  obstacles = [
+    new Obstacle({
+      x: 500,
+      y: 100,
+      color: "red",
+      width: 30,
+      height: 100,
+      velocity: 3
+    }),
+    new Obstacle({
+      x: 600,
+      y: 0,
+      color: "red",
+      width: 100,
+      height: 130,
+      velocity: 2
+    }),
+    new Obstacle({
+      x: 600,
+      y: 450,
+      color: "green",
+      width: 100,
+      height: 230,
+      velocity: 2
+    })
+  ];
+
+  player.position = { x: 200, y: 250 };
+
+  gameStarted = false;
+}
 
 function resetGame() {
   obstacles = [];
