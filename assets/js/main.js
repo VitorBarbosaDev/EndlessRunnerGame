@@ -9,7 +9,7 @@ canvas.width  = 1024;
 canvas.height = 576;
 
 // Define the gravity constant for the game
-const gravity = .5;
+const gravity = .4;
 
 let score = 0;
 let gameStarted = false;
@@ -80,7 +80,8 @@ class Player
 			this.position.y + this.height > obstacle.position.y)
 			{
 				// Collision detected, reset player's position
-				this.position = {x: 100, y: 100};
+				this.position = {x: 200, y: 250};
+				resetGame();
 			}
 	}
 }
@@ -125,9 +126,7 @@ class Obstacle extends GenericObject
 	}
 }
 
-const obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 3 }),
-	new Obstacle({x: 300, y: 0, color: 'red', width: 100, height: 130, velocity: 2}),
-	new Obstacle({x: 300, y: 450, color: 'green', width: 100, height: 230, velocity: 2})];
+let obstacles = [];
 
 
 const player = new Player();
@@ -135,6 +134,19 @@ const player = new Player();
 
 player.update();
 
+resetGame();
+function resetGame()
+{
+	
+	obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 3}),
+		new Obstacle({x: 600, y: 0, color: 'red', width: 100, height: 130, velocity: 2}),
+		new Obstacle({x: 600, y: 450, color: 'green', width: 100, height: 230, velocity: 2})];
+	
+	player.position = {x: 200, y: 250};
+	
+	gameStarted = false;
+	
+}
 
 function animate()
 {
@@ -154,10 +166,21 @@ animate();
 
 window.addEventListener('keydown', (event) =>
 {
+	if (!gameStarted)
+		{
+			gameStarted = true;
+		}
 	// If the player presses the space bar, jump
 	if (event.code === 'Space')
 		{
-			player.velocity.y = -10;
+			if (player.position.y > 10)
+				{
+					player.velocity.y = -10;
+				}
+			else if(player.position.y < 20)
+				{
+					player.velocity.y = 0;
+				}
 		}
 });
 // Add an event listener for mouse clicks on the canvas
@@ -165,7 +188,10 @@ canvas.addEventListener('click', () =>
 {
 	if(!gameStarted){
 		gameStarted = true;
+	
 	}
+	
+	if(player.position.y > 10)
 	// Jump
 	player.velocity.y = -10;
 });
