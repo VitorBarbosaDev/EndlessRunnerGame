@@ -39,6 +39,11 @@ class Player
 		this.position.y += this.velocity.y;
 		this.position.x += this.velocity.x;
 		
+		if(player.y + this.height >= canvas.height){
+			this.position.y = canvas.height - this.height;
+			this.velocity.y = 0;
+		}
+		
 		this.checkBounds();
 	}
 	
@@ -164,25 +169,6 @@ function animate()
 
 animate();
 
-window.addEventListener('keydown', (event) =>
-{
-	if (!gameStarted)
-		{
-			gameStarted = true;
-		}
-	// If the player presses the space bar, jump
-	if (event.code === 'Space')
-		{
-			if (player.position.y > 10)
-				{
-					player.velocity.y = -10;
-				}
-			else if(player.position.y < 20)
-				{
-					player.velocity.y = 0;
-				}
-		}
-});
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
 {
@@ -191,7 +177,13 @@ canvas.addEventListener('click', () =>
 	
 	}
 	
-	if(player.position.y > 10)
-	// Jump
-	player.velocity.y = -10;
+	if(player.position.y > 30)
+		{
+			// Jump
+			player.velocity.y = -10;
+		}
+	else
+	{
+		player.velocity.y = 0;
+}
 });
