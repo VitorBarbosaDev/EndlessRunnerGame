@@ -11,8 +11,9 @@ canvas.height = 576;
 // Define the gravity constant for the game
 const gravity = .4;
 
-let score = 0;
+let score       = 0;
 let gameStarted = false;
+
 class Player
 {
 	constructor()
@@ -39,7 +40,6 @@ class Player
 		this.position.y += this.velocity.y;
 		this.position.x += this.velocity.x;
 		
-	
 		
 		this.checkBounds();
 	}
@@ -70,6 +70,12 @@ class Player
 			{
 				this.velocity.y += gravity;
 			}
+		
+		//check if player is below the canvas
+		if (this.position.y + this.height > canvas.height)
+			{
+				resetGame();
+			}
 	}
 	
 	
@@ -86,7 +92,9 @@ class Player
 			}
 	}
 }
+
 let obstacleSpeed = 1;
+
 class GenericObject
 {
 	constructor({x, y, color, width, height, velocity})
@@ -95,7 +103,7 @@ class GenericObject
 		this.color    = color;
 		this.width    = width;
 		this.height   = height;
-		this.velocity = velocity || 0; 
+		this.velocity = velocity || 0;
 	}
 	
 	draw()
@@ -104,9 +112,9 @@ class GenericObject
 		c.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
 	
-	update() 
+	update()
 	{
-		if(gameStarted)
+		if (gameStarted)
 			{
 				
 				this.position.x -= this.velocity * obstacleSpeed; // Subtract the velocity from the x-position
@@ -132,17 +140,25 @@ let obstacles = [];
 
 
 const player = new Player();
- 
+
 
 player.update();
 
 resetGame();
+
 function resetGame()
 {
 	
-	obstacles = [new Obstacle({x: 500, y: 100, color: 'red', width: 30, height: 100, velocity: 3}),
-		new Obstacle({x: 600, y: 0, color: 'red', width: 100, height: 130, velocity: 2}),
-		new Obstacle({x: 600, y: 450, color: 'green', width: 100, height: 230, velocity: 2})];
+	obstacles = [
+		new Obstacle({x: 800, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
+		new Obstacle({x: 800, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
+		new Obstacle({x: 1100, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
+		new Obstacle({x: 1100, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
+		new Obstacle({x: 1400, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
+		new Obstacle({x: 1400, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
+		new Obstacle({x: 1700, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
+		new Obstacle({x: 1700, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
+	];
 	
 	player.position = {x: 200, y: 250};
 	
@@ -160,8 +176,11 @@ function animate()
 	player.update();
 	
 	// Draw the obstacles
-	obstacles.forEach(obstacle => {obstacle.update();
-	player.checkCollision(obstacle);});
+	obstacles.forEach(obstacle =>
+	                  {
+		                  obstacle.update();
+		                  player.checkCollision(obstacle);
+	                  });
 }
 
 animate();
@@ -169,18 +188,19 @@ animate();
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
 {
-	if(!gameStarted){
-		gameStarted = true;
+	if (!gameStarted)
+		{
+			gameStarted = true;
+			
+		}
 	
-	}
-	
-	if(player.position.y > 30)
+	if (player.position.y > 30)
 		{
 			// Jump
-			player.velocity.y = -10;
+			player.velocity.y = -8;
 		}
 	else
-	{
-		player.velocity.y = 0;
-}
+		{
+			player.velocity.y = 0;
+		}
 });
