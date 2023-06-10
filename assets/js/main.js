@@ -23,7 +23,7 @@ class Player
 		this.velocity = {x: 0, y: 0};
 		this.width    = 30;
 		this.height   = 30;
-		this.color    = 'green';
+		this.color    = 'blue';
 	}
 	
 	// the draw method to draw the player on the canvas
@@ -128,13 +128,46 @@ class GenericObject
 	}
 }
 
+const ObstacleType = {
+	TOP: 'top',
+	BOTTOM: 'bottom'
+};
+
+
 class Obstacle extends GenericObject
 {
-	constructor({x, y, color, width, height, velocity})
+	constructor({x, y, color, width, height, velocity, type})
 	{
 		super({x, y, color, width, height, velocity});
+		this.type = type;
+	}
+	
+	update()
+	{
+		if (gameStarted)
+			{
+				this.position.x -= this.velocity * obstacleSpeed; // Subtract the velocity from the x-position
+				if (this.position.x < -this.width) // If the object is off the left side of the canvas
+					{
+						this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
+						obstacleSpeed += .1;
+						
+						// Adjust the height or position based on the type
+						if (this.type === ObstacleType.TOP)
+							{
+								this.height = Math.random() * (300 - 130) + 130;
+							}
+						else if (this.type === ObstacleType.BOTTOM)
+							{
+								this.height     = Math.random() * (300 - 200) + 200;
+								this.position.y = 450 + (Math.random() * 100 - 50);
+							}
+					}
+			}
+		this.draw();
 	}
 }
+
 
 let obstacles = [];
 
@@ -150,15 +183,83 @@ function resetGame()
 {
 	
 	obstacles = [
-		new Obstacle({x: 800, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
-		new Obstacle({x: 800, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
-		new Obstacle({x: 1100, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
-		new Obstacle({x: 1100, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
-		new Obstacle({x: 1400, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
-		new Obstacle({x: 1400, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
-		new Obstacle({x: 1700, y: 0, color: 'red', width: 100, height: Math.random() * (300 - 130) + 130, velocity: 2}),
-		new Obstacle({x: 1700, y: 450 + (Math.random() * 100 - 50), color: 'green', width: 100, height: Math.random() * (300 - 200) + 200, velocity: 2,}),
+		new Obstacle({
+			             x: 800,
+			             y: 0,
+			             color: 'red',
+			             width: 100,
+			             height: Math.random() * (300 - 130) + 130,
+			             velocity: 2,
+			             type: ObstacleType.TOP
+		             }),
+		new Obstacle({
+			             x: 800,
+			             y: 450 + (Math.random() * 100 - 50),
+			             color: 'green',
+			             width: 100,
+			             height: Math.random() * (300 - 200) + 200,
+			             velocity: 2,
+			             type: ObstacleType.BOTTOM
+		             }),
+		new Obstacle({
+			             x: 1100,
+			             y: 0,
+			             color: 'red',
+			             width: 100,
+			             height: Math.random() * (300 - 130) + 130,
+			             velocity: 2,
+			             type: ObstacleType.TOP
+		             }),
+		new Obstacle({
+			             x: 1100,
+			             y: 450 + (Math.random() * 100 - 50),
+			             color: 'green',
+			             width: 100,
+			             height: Math.random() * (300 - 200) + 200,
+			             velocity: 2,
+			             type: ObstacleType.BOTTOM
+		             }),
+		new Obstacle({
+			             x: 1400,
+			             y: 0,
+			             color: 'red',
+			             width: 100,
+			             height: Math.random() * (300 - 130) + 130,
+			             velocity: 2,
+			             type: ObstacleType.TOP
+		             }),
+		new Obstacle({
+			             x: 1400,
+			             y: 450 + (Math.random() * 100 - 50),
+			             color: 'green',
+			             width: 100,
+			             height: Math.random() * (300 - 200) + 200,
+			             velocity: 2,
+			             type: ObstacleType.BOTTOM
+		             }),
+		new Obstacle({
+			             x: 1700,
+			             y: 0,
+			             color: 'red',
+			             width: 100,
+			             height: Math.random() * (300 - 130) + 130,
+			             velocity: 2,
+			             type: ObstacleType.TOP
+		             }),
+		new Obstacle({
+			             x: 1700,
+			             y: 450 + (Math.random() * 100 - 50),
+			             color: 'green',
+			             width: 100,
+			             height: Math.random() * (300 - 200) + 200,
+			             velocity: 2,
+			             type: ObstacleType.BOTTOM
+		             }),
 	];
+	
+	obstacleSpeed = 1;
+	
+	score = 0;
 	
 	player.position = {x: 200, y: 250};
 	
