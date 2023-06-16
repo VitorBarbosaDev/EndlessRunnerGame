@@ -384,6 +384,21 @@ function displayScore() {
   c.fillText("Score: " + score, canvas.width / 2, 50);
 }
 
+function displayFps() {
+  // FPS
+  let now = performance.now();
+  let duration = (now - lastTime) / 1000;
+
+  lastTime = now;
+
+  let fps = Math.round(1 / duration);
+
+  // FPS Display
+  c.font = "20px Arial";
+  c.fillStyle = "black";
+  c.fillText("FPS: " + fps, 10, 50);
+}
+
 let fps = 60;
 let lastTime = 0;
 
