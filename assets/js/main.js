@@ -9,7 +9,7 @@ canvas.width  = 1024;
 canvas.height = 576;
 
 // Define the gravity constant for the game
-const gravity = .4;
+const gravity = 1000;
 
 let score       = 0;
 let gameStarted = false;
@@ -34,17 +34,20 @@ class Player
 	}
 	
 	// the update method to update the player's position and velocity
-	update()
+	update(deltaTime)
 	{
 		this.draw();
-		this.position.y += this.velocity.y;
-		this.position.x += this.velocity.x;
 		
+		// Convert deltaTime from ms to s
+		const delta = deltaTime / 1000;
 		
-		this.checkBounds();
+		this.position.y += this.velocity.y * delta;
+		this.position.x += this.velocity.x * delta;
+		
+		this.checkBounds(delta);
 	}
 	
-	checkBounds()
+	checkBounds(delta)
 	{
 		// Define the padding
 		const padding = 5;
@@ -68,7 +71,7 @@ class Player
 			}
 		else if (this.position.y + this.height < canvas.height) // Only apply gravity if the player is not at the top of the canvas
 			{
-				this.velocity.y += gravity;
+				this.velocity.y += gravity * delta;
 			}
 		
 		//check if player is below the canvas
@@ -112,15 +115,16 @@ class GenericObject
 		c.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
 	
-	update()
+	update(deltaTime)
 	{
 		if (gameStarted)
 			{
+				const delta = deltaTime / 1000;
 				
-				this.position.x -= this.velocity * obstacleSpeed; // Subtract the velocity from the x-position
-				if (this.position.x < -this.width) // If the object is off the left side of the canvas
+				this.position.x -= this.velocity * obstacleSpeed * delta;
+				if (this.position.x < -this.width)
 					{
-						this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
+						this.position.x = canvas.width;
 						obstacleSpeed += .1;
 					}
 			}
@@ -142,17 +146,18 @@ class Obstacle extends GenericObject
 		this.type = type;
 	}
 	
-	update()
+	update(deltaTime)
 	{
 		if (gameStarted)
 			{
-				this.position.x -= this.velocity * obstacleSpeed; // Subtract the velocity from the x-position
-				if (this.position.x < -this.width) // If the object is off the left side of the canvas
+				const delta = deltaTime / 1000;
+				
+				this.position.x -= this.velocity * obstacleSpeed * delta;
+				if (this.position.x < -this.width)
 					{
-						this.position.x = canvas.width; // Set the x-position to the right side of the canvas 
-						obstacleSpeed += .1;
+						this.position.x = canvas.width;
+						obstacleSpeed += .02;
 						
-						// Adjust the height or position based on the type
 						if (this.type === ObstacleType.TOP)
 							{
 								this.height = Math.random() * (300 - 130) + 130;
@@ -189,7 +194,7 @@ function resetGame()
 			             color: 'red',
 			             width: 100,
 			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.TOP
 		             }),
 		new Obstacle({
@@ -198,7 +203,7 @@ function resetGame()
 			             color: 'green',
 			             width: 100,
 			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.BOTTOM
 		             }),
 		new Obstacle({
@@ -207,7 +212,7 @@ function resetGame()
 			             color: 'red',
 			             width: 100,
 			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.TOP
 		             }),
 		new Obstacle({
@@ -216,7 +221,7 @@ function resetGame()
 			             color: 'green',
 			             width: 100,
 			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.BOTTOM
 		             }),
 		new Obstacle({
@@ -225,7 +230,7 @@ function resetGame()
 			             color: 'red',
 			             width: 100,
 			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.TOP
 		             }),
 		new Obstacle({
@@ -234,7 +239,7 @@ function resetGame()
 			             color: 'green',
 			             width: 100,
 			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.BOTTOM
 		             }),
 		new Obstacle({
@@ -243,7 +248,7 @@ function resetGame()
 			             color: 'red',
 			             width: 100,
 			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.TOP
 		             }),
 		new Obstacle({
@@ -252,7 +257,7 @@ function resetGame()
 			             color: 'green',
 			             width: 100,
 			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 2,
+			             velocity: 300,
 			             type: ObstacleType.BOTTOM
 		             }),
 	];
@@ -267,24 +272,32 @@ function resetGame()
 	
 }
 
-function animate()
+let fps = 60;
+let lastTime = 0;
+
+function animate(time = 0)
 {
-	// Request the next animation frame
-	requestAnimationFrame(animate);
+	const deltaTime = time - lastTime;
+	lastTime        = time;
+	
 	c.fillStyle = 'white';
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	//update the players state
-	player.update();
+	player.update(deltaTime);
 	
 	// Draw the obstacles
 	obstacles.forEach(obstacle =>
 	                  {
-		                  obstacle.update();
+		                  obstacle.update(deltaTime);
 		                  player.checkCollision(obstacle);
 	                  });
+	
+	// Request the next animation frame
+	requestAnimationFrame(animate);
 }
 
 animate();
+
 
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
@@ -298,7 +311,7 @@ canvas.addEventListener('click', () =>
 	if (player.position.y > 30)
 		{
 			// Jump
-			player.velocity.y = -8;
+			player.velocity.y = -300;
 		}
 	else
 		{
