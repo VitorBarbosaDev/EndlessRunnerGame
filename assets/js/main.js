@@ -49,8 +49,7 @@ class Player
 	
 	checkBounds(delta)
 	{
-		// Define the padding
-		const padding = 5;
+		
 		if (!gameStarted)
 			{
 				this.position.x = 200;
