@@ -92,7 +92,13 @@ class Player
 				this.position = {x: 200, y: 250};
 				resetGame();
 			}
+		else if (this.position.x > obstacle.position.x + obstacle.width)
+			{
+				// Player passed the obstacle, increment the score
+				score += 10;  // Increment the score by a certain value, here 10
+			}
 	}
+	
 }
 
 let obstacleSpeed = 1;
@@ -156,7 +162,7 @@ class Obstacle extends GenericObject
 					{
 						this.position.x = canvas.width;
 						obstacleSpeed += .02;
-						
+						score+= 50;
 						if (this.type === ObstacleType.TOP)
 							{
 								this.height = Math.random() * (300 - 130) + 130;
@@ -283,8 +289,16 @@ function displayFps(){
 	// FPS Display
 	c.font      = "20px Arial";
 	c.fillStyle = "black";
-	c.fillText("FPS: " + fps, 10, 50);
+	c.fillText("FPS: " + fps, 100, 50);
 	
+}
+
+function displayScore(){
+	// Score Display
+	c.font      = "30px Arial";
+	c.fillStyle = "black";
+	c.textAlign = "center";  // This will center the text based on the position provided.
+	c.fillText("Score: " + score, canvas.width / 2, 50);
 }
 
 
@@ -309,6 +323,10 @@ function animate(time = 0)
 	                  });
 	
 	displayFps();
+	
+	displayScore()
+
+	
 	
 	// Request the next animation frame
 	requestAnimationFrame(animate);
