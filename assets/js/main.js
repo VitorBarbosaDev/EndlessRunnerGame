@@ -271,6 +271,23 @@ function resetGame()
 	
 }
 
+function displayFps(){
+	// FPS
+	let now      = performance.now();
+	let duration = (now - lastTime) / 1000;
+	
+	lastTime = now;
+	
+	let fps = Math.round(1 / duration);
+	
+	// FPS Display
+	c.font      = "20px Arial";
+	c.fillStyle = "black";
+	c.fillText("FPS: " + fps, 10, 50);
+	
+}
+
+
 let fps = 60;
 let lastTime = 0;
 
@@ -290,6 +307,8 @@ function animate(time = 0)
 		                  obstacle.update(deltaTime);
 		                  player.checkCollision(obstacle);
 	                  });
+	
+	displayFps();
 	
 	// Request the next animation frame
 	requestAnimationFrame(animate);
