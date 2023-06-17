@@ -165,7 +165,7 @@ class Obstacle extends GenericObject
 						score += 50;
 						if (this.type === ObstacleType.TOP)
 							{
-								this.height = Math.random() * (400 - 120) + 120;
+								this.height = Math.random() * (375 - 120) + 120;
 							}
 						else if (this.type === ObstacleType.BOTTOM)
 							{
