@@ -1,137 +1,153 @@
 /* Remove default margin, padding and border of all elements */
 * {
-	margin  : 0;
-	padding : 0;
-	border  : 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 /* Set the canvas to display as a block element and apply a border */
 canvas {
-	display : block;
-	border  : #333333 1px solid;
+  display: block;
+  border: #333333 1px solid;
 }
 
 /* Set the body background to a linear gradient, center its content and apply default font */
 body {
-	background      : linear-gradient(to bottom, #87ceeb, #ffffff); /* Apply a sky-like gradient as the background */
-	display         : flex; /* Use flex layout for centering */
-	align-items     : center; /* Vertically center content */
-	justify-content : center; /* Horizontally center content */
-	height          : 100vh; /* Full viewport height */
-	font-family     : Arial, sans-serif; /* Default font for the whole page */
-	color           : #333; /* Default text color */
+  background: linear-gradient(
+    to bottom,
+    #87ceeb,
+    #ffffff
+  ); /* Apply a sky-like gradient as the background */
+  display: flex; /* Use flex layout for centering */
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+  height: 100vh; /* Full viewport height */
+  font-family: Arial, sans-serif; /* Default font for the whole page */
+  color: #333; /* Default text color */
 }
 
 /* Set the start menu to display as a flex container and style it */
 #start-menu {
-	position         : absolute; /* Positioning context is the viewport */
-	z-index          : 10; /* Stack order */
-	display          : flex; /* Use flex layout for centering and direction */
-	flex-direction   : column; /* Stack elements vertically */
-	align-items      : center; /* Center content horizontally */
-	justify-content  : center; /* Center content vertically */
-	padding          : 20px; /* Inner spacing */
-	background-color : rgba(175, 190, 248, 0.56); /* Semi-transparent background color */
-	border           : #333333 1px solid; /* Border color */
-	border-radius    : 10px; /* Rounded corners */
+  position: absolute; /* Positioning context is the viewport */
+  z-index: 10; /* Stack order */
+  display: flex; /* Use flex layout for centering and direction */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  padding: 20px; /* Inner spacing */
+  background-color: rgba(
+    175,
+    190,
+    248,
+    0.56
+  ); /* Semi-transparent background color */
+  border: #333333 1px solid; /* Border color */
+  border-radius: 10px; /* Rounded corners */
 }
 
 /* Style the buttons in start menu and game over menu */
-#start-menu button, #game-over button {
-	margin           : 10px; /* Outer spacing */
-	padding          : 10px 20px; /* Inner spacing */
-	font-size        : 20px; /* Text size */
-	cursor           : pointer; /* Change cursor on hover */
-	background-color : #87ceeb; /* Background color */
-	border           : #333333 1px solid; /* Border color */
-	color            : #fff; /* Text color */
-	border-radius    : 5px; /* Rounded corners */
-	transition       : background-color 0.3s ease; /* Transition effect for hover */
+#start-menu button,
+#game-over button {
+  margin: 10px; /* Outer spacing */
+  padding: 10px 20px; /* Inner spacing */
+  font-size: 20px; /* Text size */
+  cursor: pointer; /* Change cursor on hover */
+  background-color: #87ceeb; /* Background color */
+  border: #333333 1px solid; /* Border color */
+  color: #fff; /* Text color */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Transition effect for hover */
 }
 
 /* Change background color of buttons on hover */
-#start-menu button:hover, #game-over button:hover {
-	background-color : #1e90ff; /* Darker blue on hover */
+#start-menu button:hover,
+#game-over button:hover {
+  background-color: #1e90ff; /* Darker blue on hover */
 }
 
 /* Modal (background) styles */
 .modal {
-	display          : none; /* Hidden by default */
-	position         : fixed; /* Positioned relative to the viewport */
-	z-index          : 1; /* Stack order */
-	padding-top      : 100px; /* Top padding */
-	width            : 100%; /* Full width */
-	height           : 50%; /* Half viewport height */
-	overflow         : auto; /* Enable scroll if needed */
-	background-color : rgba(0, 0, 0, 0.4); /* Black with opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Positioned relative to the viewport */
+  z-index: 1; /* Stack order */
+  padding-top: 100px; /* Top padding */
+  width: 100%; /* Full width */
+  height: 50%; /* Half viewport height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
 }
 
 /* Modal content styles */
 .modal-content {
-	display          : flex; /* Use flex layout for alignment and direction */
-	justify-content  : space-between; /* Distribute space evenly between content */
-	align-items      : center; /* Center content vertically */
-	margin           : auto; /* Center the element */
-	padding          : 20px; /* Inner spacing */
-	border           : 1px solid #888; /* Border color */
-	width            : 60%; /* Width relative to parent */
-	flex-direction   : column; /* Stack elements vertically */
-	background-color : #fff; /* Background color */
-	border-radius    : 10px; /* Rounded corners */
-	box-shadow       : 0 10px 20px rgba(0, 0, 0, 0.1); /* Add some shadow */
+  display: flex; /* Use flex layout for alignment and direction */
+  justify-content: space-between; /* Distribute space evenly between content */
+  align-items: center; /* Center content vertically */
+  margin: auto; /* Center the element */
+  padding: 20px; /* Inner spacing */
+  border: 1px solid #888; /* Border color */
+  width: 60%; /* Width relative to parent */
+  flex-direction: column; /* Stack elements vertically */
+  background-color: #fff; /* Background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Add some shadow */
 }
 
 /* Modal header styles */
 .modal-header {
-	display         : flex; /* Use flex layout for alignment */
-	justify-content : space-between; /* Distribute space evenly between content */
-	width           : 100%; /* Full width */
+  display: flex; /* Use flex layout for alignment */
+  justify-content: space-between; /* Distribute space evenly between content */
+  width: 100%; /* Full width */
 }
 
 /* Style the close button */
 .close {
-	color       : #aaaaaa; /* Text color */
-	font-size   : 28px; /* Text size */
-	font-weight : bold; /* Text weight */
-	cursor      : pointer; /* Change cursor on hover */
+  color: #aaaaaa; /* Text color */
+  font-size: 28px; /* Text size */
+  font-weight: bold; /* Text weight */
+  cursor: pointer; /* Change cursor on hover */
 }
 
 /* Style the close button on hover and focus */
 .close:hover,
 .close:focus {
-	color           : #000; /* Text color */
-	text-decoration : none; /* Remove underline */
-	cursor          : pointer; /* Change cursor on hover */
+  color: #000; /* Text color */
+  text-decoration: none; /* Remove underline */
+  cursor: pointer; /* Change cursor on hover */
 }
 
 /* Style the leaderboard close button */
 #leaderboard-close {
-	z-index : 20; /* Stack order */
+  z-index: 20; /* Stack order */
 }
 
 /* Style the game over menu */
 #game-over {
-	position         : absolute; /* Positioning context is the viewport */
-	z-index          : 10; /* Stack order */
-	display          : none; /* Hidden by default */
-	flex-direction   : column; /* Stack elements vertically */
-	align-items      : center; /* Center content horizontally */
-	justify-content  : center; /* Center content vertically */
-	padding          : 20px; /* Inner spacing */
-	background-color : rgba(255, 255, 255, 0.8); /* Semi-transparent background color */
-	border           : #333333 1px solid; /* Border color */
-	border-radius    : 10px; /* Rounded corners */
+  position: absolute; /* Positioning context is the viewport */
+  z-index: 10; /* Stack order */
+  display: none; /* Hidden by default */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  padding: 20px; /* Inner spacing */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Semi-transparent background color */
+  border: #333333 1px solid; /* Border color */
+  border-radius: 10px; /* Rounded corners */
 }
 
-#fullscreen-button{
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	z-index: 20;
+#fullscreen-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
 }
 
-@media (max-width : 900px) {
-	#fullscreen-button {
-		display : none;
-	}
+@media (max-width: 900px) {
+  #fullscreen-button {
+    display: none;
+  }
 }
