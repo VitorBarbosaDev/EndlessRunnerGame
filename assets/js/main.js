@@ -158,29 +158,39 @@ class Obstacle extends GenericObject
 				const delta = deltaTime / 1000;
 				
 				this.position.x -= this.velocity * obstacleSpeed * delta;
-				if (this.position.x < -this.width)
+				if (this.position.x < -this.width -obstacleDistance/2.5)
 					{
 						this.position.x = canvas.width;
 						obstacleSpeed += .02;
-						score+= 50;
+						score += 50;
 						if (this.type === ObstacleType.TOP)
 							{
-								this.height = Math.random() * (300 - 130) + 130;
+								this.height = Math.random() * (400 - 120) + 120;
 							}
 						else if (this.type === ObstacleType.BOTTOM)
 							{
-								this.height     = Math.random() * (300 - 200) + 200;
-								this.position.y = 450 + (Math.random() * 100 - 50);
+								let topObstacle = obstacles.find(obstacle =>
+									                                 obstacle.type === ObstacleType.TOP &&
+									                                 obstacle.position.x === this.position.x
+								);
+								
+								if (topObstacle)
+									{
+										this.position.y = topObstacle.height + gap;
+										this.height     = canvas.height - this.position.y;
+									}
 							}
 					}
 			}
 		this.draw();
 	}
+	
 }
 
 
 let obstacles = [];
-
+let gap              = 150;  // The gap size between the top and bottom obstacles
+let obstacleDistance = 300;  // The horizontal distance between obstacles
 
 const player = new Player();
 
@@ -189,93 +199,47 @@ player.update();
 
 resetGame();
 
+
 function resetGame()
 {
-	
-	obstacles = [
-		new Obstacle({
-			             x: 800,
-			             y: 0,
-			             color: 'red',
-			             width: 100,
-			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 300,
-			             type: ObstacleType.TOP
-		             }),
-		new Obstacle({
-			             x: 800,
-			             y: 450 + (Math.random() * 100 - 50),
-			             color: 'green',
-			             width: 100,
-			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 300,
-			             type: ObstacleType.BOTTOM
-		             }),
-		new Obstacle({
-			             x: 1100,
-			             y: 0,
-			             color: 'red',
-			             width: 100,
-			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 300,
-			             type: ObstacleType.TOP
-		             }),
-		new Obstacle({
-			             x: 1100,
-			             y: 450 + (Math.random() * 100 - 50),
-			             color: 'green',
-			             width: 100,
-			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 300,
-			             type: ObstacleType.BOTTOM
-		             }),
-		new Obstacle({
-			             x: 1400,
-			             y: 0,
-			             color: 'red',
-			             width: 100,
-			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 300,
-			             type: ObstacleType.TOP
-		             }),
-		new Obstacle({
-			             x: 1400,
-			             y: 450 + (Math.random() * 100 - 50),
-			             color: 'green',
-			             width: 100,
-			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 300,
-			             type: ObstacleType.BOTTOM
-		             }),
-		new Obstacle({
-			             x: 1700,
-			             y: 0,
-			             color: 'red',
-			             width: 100,
-			             height: Math.random() * (300 - 130) + 130,
-			             velocity: 300,
-			             type: ObstacleType.TOP
-		             }),
-		new Obstacle({
-			             x: 1700,
-			             y: 450 + (Math.random() * 100 - 50),
-			             color: 'green',
-			             width: 100,
-			             height: Math.random() * (300 - 200) + 200,
-			             velocity: 300,
-			             type: ObstacleType.BOTTOM
-		             }),
-	];
-	
-	obstacleSpeed = 1;
-	
-	score = 0;
-	
+	obstacles       = [];
+	obstacleSpeed   = 1;
+	score           = 0;
 	player.position = {x: 200, y: 250};
+	gameStarted     = false;
 	
-	gameStarted = false;
+	
+	
+	
+	// Creating four pairs of obstacles
+	for (let i = 0; i < 4; i++)
+		{
+			const randomHeight = Math.random() * (300 - 130) + 130;
+			
+			obstacles.push(
+				new Obstacle({
+					             x: 800 + i * obstacleDistance,
+					             y: 0,
+					             color: 'red',
+					             width: 100,
+					             height: randomHeight,
+					             velocity: 300,
+					             type: ObstacleType.TOP
+				             }),
+				new Obstacle({
+					             x: 800 + i * obstacleDistance,
+					             y: randomHeight + gap,
+					             color: 'green',
+					             width: 100,
+					             height: canvas.height - randomHeight - gap,
+					             velocity: 300,
+					             type: ObstacleType.BOTTOM
+				             })
+			);
+		}
 	
 }
+
 
 function displayFps(){
 	// FPS
