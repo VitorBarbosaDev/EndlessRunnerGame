@@ -518,6 +518,15 @@ closeLeaderboardButton.onclick = function() {
   leaderboardModal.style.display = "none";
 };
 
+playButton.addEventListener("click", () => {
+  startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
+  gameStarted = true;
+});
+
+howToButton.addEventListener("click", () => {
+  alert("Here is some information on how to play the game."); // Display instructions when the how to play button is clicked
+});
+
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener("click", () => {
   playerJump();
