@@ -1,5 +1,8 @@
 // Select the canvas element from the HTML document
 const canvas = document.querySelector('canvas');
+const startMenu   = document.getElementById('start-menu');
+const playButton  = document.getElementById('play-button');
+const howToButton = document.getElementById('how-to-button');
 
 // Get the 2D rendering context for the canvas
 const c = canvas.getContext('2d');
@@ -207,8 +210,7 @@ function resetGame()
 	score           = 0;
 	player.position = {x: 200, y: 250};
 	gameStarted     = false;
-	
-	
+	startMenu.style.display = "flex"; // Show the start menu when the game is not started
 	
 	
 	// Creating four pairs of obstacles
@@ -297,6 +299,18 @@ function animate(time = 0)
 }
 
 animate();
+
+
+playButton.addEventListener('click', () =>
+{
+	startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
+	gameStarted             = true;
+});
+
+howToButton.addEventListener('click', () =>
+{
+	alert("Here is some information on how to play the game."); // Display instructions when the how to play button is clicked
+});
 
 
 // Add an event listener for mouse clicks on the canvas
