@@ -53,6 +53,33 @@ async function addPlayerScore(name, score) {
   }
 }
 
+import { firebaseConfig } from "./secrets.js";
+
+import {
+  getDocs,
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+async function addPlayerScore(name, score) {
+  try {
+    const docRef = await addDoc(collection(db, "leaderboard"), {
+      name: name,
+      score: score
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
 // Define the gravity constant for the game
 const defaultGravity = 1000;
 let gravity = 1000;
@@ -279,6 +306,15 @@ function displayLeaderboard() {
     }</p>`;
   });
   leaderboardModal.style.display = "block";
+}
+
+async function getScores() {
+  const querySnapshot = await getDocs(collection(db, "leaderboard"));
+  const scores = [];
+  querySnapshot.forEach(doc => {
+    scores.push(doc.data());
+  });
+  return scores;
 }
 
 let obstacles = [];
