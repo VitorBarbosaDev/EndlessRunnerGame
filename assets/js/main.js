@@ -368,11 +368,15 @@ animate();
 
 restartButton.addEventListener('click', () =>{gameOverMenu.style.display = "none";resetGame();});
 
-playButton.addEventListener('click', () =>
-{
+function playGame(){
 	startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
 	startCountdown();  // Start countdown
 	canvas.focus(); // Set focus on the canvas
+}
+
+playButton.addEventListener('click', () =>
+{
+	playGame();
 });
 
 
@@ -395,10 +399,7 @@ window.onclick = function (event)
 			}
 	}
 
-// Add an event listener for mouse clicks on the canvas
-canvas.addEventListener('click', () =>
-{
-
+function playerJump(){
 	if (player.position.y > 30)
 		{
 			// Jump
@@ -408,4 +409,22 @@ canvas.addEventListener('click', () =>
 		{
 			player.velocity.y = 0;
 		}
+}
+
+
+// Add an event listener for mouse clicks on the canvas
+canvas.addEventListener('click', () =>
+{
+	playerJump();
 });
+
+window.addEventListener('keydown', (event) =>{
+	
+	
+	
+	if(event.code === 'Space')
+	{
+		
+		playerJump();
+	}
+})
