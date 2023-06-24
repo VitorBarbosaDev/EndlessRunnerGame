@@ -20,7 +20,8 @@ canvas.width  = 1024;
 canvas.height = 576;
 
 // Define the gravity constant for the game
-const gravity = 1000;
+const defaultGravity = 1000;
+let gravity = 1000;
 
 let score       = 0;
 let gameStarted = false;
@@ -49,6 +50,7 @@ class Player
 	{
 		this.draw();
 		
+		
 		// Convert deltaTime from ms to s
 		const delta = deltaTime / 1000;
 		
@@ -63,15 +65,12 @@ class Player
 		
 		if (!gameStarted)
 			{
-				this.position.x = 200;
-				this.position.y = 250;
+			gravity = 0;
+			player.velocity.y = 0;
 			}
-		
-		if (this.y + this.height >= canvas.height)
-			{
-				this.position.y = canvas.height - this.height;
-				this.velocity.y = 0;
-			}
+		else{
+			gravity = defaultGravity;
+		}
 		
 		//check if player is at the top of the canvas
 		if (this.position.y <= 0)
@@ -97,10 +96,8 @@ class Player
 		if (this.position.x < obstacle.position.x + obstacle.width &&
 			this.position.x + this.width > obstacle.position.x &&
 			this.position.y < obstacle.position.y + obstacle.height &&
-			this.position.y + this.height > obstacle.position.y)
+			this.position.y + this.height > obstacle.position.y && gameStarted)
 			{
-				// Collision detected, reset player's position
-				this.position = {x: 200, y: 250};
 				gameOver();
 			}
 		else if (this.position.x > obstacle.position.x + obstacle.width && gameStarted)
@@ -220,7 +217,6 @@ function startCountdown()
 				                                    gameStarted = true;  // Starts the game
 			                                    }
 		                                    
-		                                    c.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
 		                                    c.fillText(countdownDisplay, canvas.width / 2, canvas.height / 2); // Redraw the countdown text after color change
 	                                    }, 1000);
 }
@@ -332,10 +328,6 @@ function animate(time = 0)
 		                  player.checkCollision(obstacle);
 	                  });
 	
-	displayFps();
-	
-	displayScore()
-	
 	// Draw the countdown display on every frame
 	if (!gameStarted)
 		{
@@ -358,6 +350,12 @@ function animate(time = 0)
 				}
 			c.fillText(countdownDisplay, canvas.width / 2, canvas.height / 2);
 		}
+	
+	displayFps();
+	
+	displayScore()
+	
+
 	
 	// Request the next animation frame
 	requestAnimationFrame(animate);
