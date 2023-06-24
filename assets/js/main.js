@@ -10,7 +10,6 @@ const gameOverScore = document.getElementById("final-score");
 const restartButton = document.getElementById("restart-button");
 
 
-
 let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
 const c = canvas.getContext('2d');
@@ -18,6 +17,44 @@ const c = canvas.getContext('2d');
 // Set the canvas width and height to match the window's inner width and height
 canvas.width  = 1024;
 canvas.height = 576;
+
+import {firebaseConfig} from './secrets.js';
+
+import {
+	getDocs,
+	getFirestore,
+	collection,
+	addDoc,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+
+
+
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+async function addPlayerScore(name, score)
+{
+	try
+		{
+			const docRef = await addDoc(collection(db, "leaderboard"), {
+				name: name,
+				score: score
+			});
+			console.log("Document written with ID: ", docRef.id);
+		}
+	catch (e)
+		{
+			console.error("Error adding document: ", e);
+		}
+}
+
+
+
 
 // Define the gravity constant for the game
 const defaultGravity = 1000;
@@ -221,12 +258,35 @@ function startCountdown()
 	                                    }, 1000);
 }
 
-function gameOver(){
+
+function gameOver()
+{
+	addPlayerScore("playerName", score); 
+	
 	gameOverMenu.style.display = "flex";
-	gameStarted = false;
+	gameStarted                = false;
 	
 	gameOverScore.innerHTML = score;
+	score                   = 0; // reset score after game over
+	getScores().then(scores =>
+	                     {
+	                     // do something with scores
+	                     console.log(scores);
+	                     });
 }
+
+
+async function getScores()
+{
+	const querySnapshot = await getDocs(collection(db, "leaderboard"));
+	const scores        = [];
+	querySnapshot.forEach((doc) =>
+	                      {
+		                      scores.push(doc.data());
+	                      });
+	return scores;
+}
+
 
 let obstacles = [];
 let gap              = 150;  // The gap size between the top and bottom obstacles
