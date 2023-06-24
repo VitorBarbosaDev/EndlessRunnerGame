@@ -481,6 +481,10 @@ fullscreenButton.addEventListener("click", toggleFullScreen);
 playButton.addEventListener("click", () => {
   playGame();
 });
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+};
 
 howToButton.addEventListener("click", () => {
   modal.style.display = "block"; // Show the modal when the how to button is clicked
