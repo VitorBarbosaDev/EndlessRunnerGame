@@ -3,7 +3,11 @@ const canvas = document.querySelector('canvas');
 const startMenu   = document.getElementById('start-menu');
 const playButton  = document.getElementById('play-button');
 const howToButton = document.getElementById('how-to-button');
+const modal = document.getElementById("myModal");
+const span = document.getElementsByClassName("close")[0];
 
+
+let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
 const c = canvas.getContext('2d');
 
@@ -59,7 +63,7 @@ class Player
 				this.position.y = 250;
 			}
 		
-		if (player.y + this.height >= canvas.height)
+		if (this.y + this.height >= canvas.height)
 			{
 				this.position.y = canvas.height - this.height;
 				this.velocity.y = 0;
@@ -190,6 +194,32 @@ class Obstacle extends GenericObject
 	
 }
 
+let countdownDisplay = "";  // A global variable for the countdown display
+
+function startCountdown()
+{
+	countdownNumber = 4;
+	
+
+	
+	let countdownInterval = setInterval(() =>
+	                                    {
+		                                    countdownNumber--;
+		                                    
+		                                  
+		                                    
+		                                    countdownDisplay = countdownNumber > .5 ? countdownNumber : "";
+		                                    if (countdownNumber <= 0)
+			                                    {
+				                                    clearInterval(countdownInterval);
+				                                    gameStarted = true;  // Starts the game
+			                                    }
+		                                    
+		                                    c.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+		                                    c.fillText(countdownDisplay, canvas.width / 2, canvas.height / 2); // Redraw the countdown text after color change
+	                                    }, 1000);
+}
+
 
 let obstacles = [];
 let gap              = 150;  // The gap size between the top and bottom obstacles
@@ -278,6 +308,9 @@ function animate(time = 0)
 	
 	c.fillStyle = 'white';
 	c.fillRect(0, 0, canvas.width, canvas.height);
+	
+	
+	
 	//update the players state
 	player.update(deltaTime);
 	
@@ -291,8 +324,29 @@ function animate(time = 0)
 	displayFps();
 	
 	displayScore()
-
 	
+	// Draw the countdown display on every frame
+	if (!gameStarted)
+		{
+			// Countdown Display
+			c.font      = "50px Arial";
+			c.textAlign = "center";
+			
+			switch (countdownNumber)
+				{
+					case 3:
+						c.fillStyle = "yellow";
+						break;
+					case 2:
+						c.fillStyle = "orange";
+						break;
+					case 1:
+						c.fillStyle = "red";
+						break;
+					
+				}
+			c.fillText(countdownDisplay, canvas.width / 2, canvas.height / 2);
+		}
 	
 	// Request the next animation frame
 	requestAnimationFrame(animate);
@@ -304,24 +358,34 @@ animate();
 playButton.addEventListener('click', () =>
 {
 	startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
-	gameStarted             = true;
+	startCountdown();  // Start countdown
+	canvas.focus(); // Set focus on the canvas
 });
+
 
 howToButton.addEventListener('click', () =>
 {
-	alert("Here is some information on how to play the game."); // Display instructions when the how to play button is clicked
+	modal.style.display = "block"; // Show the modal when the how to button is clicked
 });
+// When the user clicks on <span> (x), close the modal
+span.onclick = function ()
+	{
+		modal.style.display = "none";
+	}
 
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event)
+	{
+		if (event.target === modal)
+			{
+				modal.style.display = "none";
+			}
+	}
 
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
 {
-	if (!gameStarted)
-		{
-			gameStarted = true;
-			
-		}
-	
+
 	if (player.position.y > 30)
 		{
 			// Jump
