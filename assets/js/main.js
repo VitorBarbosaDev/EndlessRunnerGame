@@ -5,6 +5,10 @@ const playButton  = document.getElementById('play-button');
 const howToButton = document.getElementById('how-to-button');
 const modal = document.getElementById("myModal");
 const span = document.getElementsByClassName("close")[0];
+const gameOverMenu = document.getElementById("game-over");
+const gameOverScore = document.getElementById("final-score");
+const restartButton = document.getElementById("restart-button");
+
 
 
 let countdownNumber = 3;  // 3 seconds countdown
@@ -83,7 +87,7 @@ class Player
 		//check if player is below the canvas
 		if (this.position.y + this.height > canvas.height)
 			{
-				resetGame();
+				gameOver();
 			}
 	}
 	
@@ -97,10 +101,11 @@ class Player
 			{
 				// Collision detected, reset player's position
 				this.position = {x: 200, y: 250};
-				resetGame();
+				gameOver();
 			}
-		else if (this.position.x > obstacle.position.x + obstacle.width)
+		else if (this.position.x > obstacle.position.x + obstacle.width && gameStarted)
 			{
+				
 				// Player passed the obstacle, increment the score
 				score += 10;  // Increment the score by a certain value, here 10
 			}
@@ -220,6 +225,12 @@ function startCountdown()
 	                                    }, 1000);
 }
 
+function gameOver(){
+	gameOverMenu.style.display = "flex";
+	gameStarted = false;
+	
+	gameOverScore.innerHTML = score;
+}
 
 let obstacles = [];
 let gap              = 150;  // The gap size between the top and bottom obstacles
@@ -354,6 +365,8 @@ function animate(time = 0)
 
 animate();
 
+
+restartButton.addEventListener('click', () =>{gameOverMenu.style.display = "none";resetGame();});
 
 playButton.addEventListener('click', () =>
 {

@@ -3,7 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Endless Runner</title>
-	<link rel="stylesheet" href="assets/css/style.css">
+	<meta content="width=device-width,initial-scale=1.0" name="viewport">
+	<meta content="Endless Runner Jump game" name="description">
+	<meta content="Vitor Barbosa" name="author">
+	<meta content="game, Endless Runner, jump game, web game" name="keywords">
+	<link href="assets/css/style.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <div id="start-menu">
@@ -15,7 +20,7 @@
 		<!-- Modal content -->
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1>Here is some information on how to play the game.</h1>
+				<h1>Here is some information on how to play the game. <i class="fa-solid fa-gamepad"></i> </h1>
 				<span class="close">&times;</span>
 			</div>
 			<p>Tap/click the screen or Press the space bar to jump. Avoid the obstacles and collect the coins.</p>
@@ -25,6 +30,12 @@
 	</div>
 	
 	<button id="how-to-button">How to play</button>
+</div>
+
+<div id="game-over">
+	<h1>Game Over</h1>
+	<p>Your score was <span id="final-score"></span></p>
+	<button id="restart-button">Restart</button>
 </div>
 <canvas tabindex="0">Your browser does not support the HTML5 canvas tag.</canvas>
 
