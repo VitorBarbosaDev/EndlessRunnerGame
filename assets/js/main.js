@@ -9,7 +9,7 @@ const gameOverMenu = document.getElementById("game-over");
 const gameOverScore = document.getElementById("final-score");
 const restartButton = document.getElementById("restart-button");
 const leaderboardButton = document.getElementById("leaderboard-button");
-
+const playerNameInput = document.getElementById('player-name');
 
 let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
@@ -38,12 +38,14 @@ import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-async function addPlayerScore(name, score)
+
+async function addPlayerScore(name,score)
 {
+	const playerName = playerNameInput.value || "Anonymous";
 	try
 		{
 			const docRef = await addDoc(collection(db, "leaderboard"), {
-				name: name,
+				name: playerName,
 				score: score
 			});
 			console.log("Document written with ID: ", docRef.id);
@@ -262,7 +264,7 @@ function startCountdown()
 
 function gameOver()
 {
-	addPlayerScore("playerName", score); 
+	addPlayerScore(playerNameInput.value, score); 
 	
 	gameOverMenu.style.display = "flex";
 	gameStarted                = false;
@@ -301,10 +303,10 @@ async function displayLeaderboard()
 	const topScores = allScores.slice(0, 10);
 	
 	// Find the current user's score
-	const currentUserScore = allScores.find(score => score.name === "playerName");
+	const currentUserScore = allScores.find(score => score.name === playerNameInput.value);
 	
 	// Find the current user's ranking
-	const currentUserRanking = allScores.findIndex(score => score.name === "playerName") + 1;
+	const currentUserRanking = allScores.findIndex(score => score.name === playerNameInput.value) + 1;
 	
 	// Display the leaderboard
 	console.log("Leaderboard:");
@@ -458,6 +460,12 @@ animate();
 restartButton.addEventListener('click', () =>{gameOverMenu.style.display = "none";resetGame();});
 
 function playGame(){
+	//check if the player has entered their name
+	if (playerNameInput.value.trim() === "")
+		{
+			alert("Please enter your name before playing.");
+			return;
+		}
 	startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
 	startCountdown();  // Start countdown
 	canvas.focus(); // Set focus on the canvas
