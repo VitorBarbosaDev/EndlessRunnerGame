@@ -8,6 +8,7 @@ const span = document.getElementsByClassName("close")[0];
 const gameOverMenu = document.getElementById("game-over");
 const gameOverScore = document.getElementById("final-score");
 const restartButton = document.getElementById("restart-button");
+const leaderboardButton = document.getElementById("leaderboard-button");
 
 
 let countdownNumber = 3;  // 3 seconds countdown
@@ -284,7 +285,37 @@ async function getScores()
 	                      {
 		                      scores.push(doc.data());
 	                      });
+	
+	// Sort the scores in descending order
+	scores.sort((a, b) => b.score - a.score);
+	
 	return scores;
+}
+
+async function displayLeaderboard()
+{
+	// Fetch all scores
+	const allScores = await getScores();
+	
+	// Get the top 10 scores
+	const topScores = allScores.slice(0, 10);
+	
+	// Find the current user's score
+	const currentUserScore = allScores.find(score => score.name === "playerName");
+	
+	// Find the current user's ranking
+	const currentUserRanking = allScores.findIndex(score => score.name === "playerName") + 1;
+	
+	// Display the leaderboard
+	console.log("Leaderboard:");
+	topScores.forEach((score, index) =>
+	                  {
+		                  console.log(`${index + 1}. ${score.name}: ${score.score}`);
+	                  });
+	
+	// Display the current user's score and ranking
+	console.log(`\nYour Score: ${currentUserScore.score}`);
+	console.log(`Your Ranking: ${currentUserRanking}`);
 }
 
 
@@ -468,6 +499,8 @@ function playerJump(){
 			player.velocity.y = 0;
 		}
 }
+
+leaderboardButton.addEventListener('click', displayLeaderboard);
 
 
 // Add an event listener for mouse clicks on the canvas
