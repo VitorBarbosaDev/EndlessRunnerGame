@@ -308,17 +308,29 @@ async function displayLeaderboard()
 	// Find the current user's ranking
 	const currentUserRanking = allScores.findIndex(score => score.name === playerNameInput.value) + 1;
 	
+	// Clear the canvas
+	c.clearRect(0, 0, canvas.width, canvas.height);
+	
+	// Draw the leaderboard title
+	c.font      = "30px Arial";
+	c.textAlign = "center";
+	c.fillText("Leaderboard:", canvas.width / 2, 50);
+	
 	// Display the leaderboard
-	console.log("Leaderboard:");
 	topScores.forEach((score, index) =>
 	                  {
-		                  console.log(`${index + 1}. ${score.name}: ${score.score}`);
+		                  c.font = "20px Arial";
+		                  c.fillText(`${index + 1}. ${score.name}: ${score.score}`, canvas.width / 2, 80 + index * 30);
 	                  });
 	
 	// Display the current user's score and ranking
-	console.log(`\nYour Score: ${currentUserScore.score}`);
-	console.log(`Your Ranking: ${currentUserRanking}`);
+	if (currentUserScore)
+		{
+			c.fillText(`Your Score: ${currentUserScore.score}`, canvas.width / 2, canvas.height - 60);
+			c.fillText(`Your Ranking: ${currentUserRanking}`, canvas.width / 2, canvas.height - 30);
+		}
 }
+
 
 
 let obstacles = [];
@@ -508,8 +520,11 @@ function playerJump(){
 		}
 }
 
-leaderboardButton.addEventListener('click', displayLeaderboard);
-
+leaderboardButton.addEventListener('click', () =>
+{
+	gameOverMenu.style.display = "none"; // hide gameOver menu when leaderboard button is clicked
+	displayLeaderboard();
+});
 
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
