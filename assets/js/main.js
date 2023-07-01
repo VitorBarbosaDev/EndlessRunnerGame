@@ -517,6 +517,7 @@ fullscreenButton.addEventListener("click", toggleFullScreen);
 playButton.addEventListener("click", () => {
   playGame();
 });
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
@@ -565,6 +566,10 @@ playButton.addEventListener("click", () => {
 
 howToButton.addEventListener("click", () => {
   alert("Here is some information on how to play the game."); // Display instructions when the how to play button is clicked
+});
+
+closeLeaderboardButton.addEventListener("click", () => {
+  leaderboardModal.style.display = "none";
 });
 
 // Add an event listener for mouse clicks on the canvas
