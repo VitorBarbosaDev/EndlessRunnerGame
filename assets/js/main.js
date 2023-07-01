@@ -10,6 +10,8 @@ const gameOverScore = document.getElementById("final-score");
 const restartButton = document.getElementById("restart-button");
 const leaderboardButton = document.getElementById("leaderboard-button");
 const playerNameInput = document.getElementById('player-name');
+const leaderboardModal       = document.getElementById("myleaderboard");
+const closeLeaderboardButton = document.getElementsByClassName('close')[1];
 
 let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
@@ -285,7 +287,11 @@ async function getScores()
 	const scores        = [];
 	querySnapshot.forEach((doc) =>
 	                      {
-		                      scores.push(doc.data());
+		                      const data = doc.data();
+		                      if (data.score > 0)
+			                      {
+				                      scores.push(data);
+			                      }
 	                      });
 	
 	// Sort the scores in descending order
@@ -294,43 +300,23 @@ async function getScores()
 	return scores;
 }
 
+
 async function displayLeaderboard()
 {
-	// Fetch all scores
-	const allScores = await getScores();
-	
-	// Get the top 10 scores
-	const topScores = allScores.slice(0, 10);
-	
-	// Find the current user's score
-	const currentUserScore = allScores.find(score => score.name === playerNameInput.value);
-	
-	// Find the current user's ranking
-	const currentUserRanking = allScores.findIndex(score => score.name === playerNameInput.value) + 1;
-	
-	// Clear the canvas
-	c.clearRect(0, 0, canvas.width, canvas.height);
-	
-	// Draw the leaderboard title
-	c.font      = "30px Arial";
-	c.textAlign = "center";
-	c.fillText("Leaderboard:", canvas.width / 2, 50);
-	
-	// Display the leaderboard
+	const topScores              = await getScores();
+	const leaderboardContent     = leaderboardModal.querySelector('.modal-content');
+	leaderboardContent.innerHTML = `
+        <div class="modal-header">
+            <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
+            <span class="close">&times;</span>
+        </div>
+    `;
 	topScores.forEach((score, index) =>
 	                  {
-		                  c.font = "20px Arial";
-		                  c.fillText(`${index + 1}. ${score.name}: ${score.score}`, canvas.width / 2, 80 + index * 30);
+		                  leaderboardContent.innerHTML += `<p>${index + 1}. ${score.name}: ${score.score}</p>`;
 	                  });
-	
-	// Display the current user's score and ranking
-	if (currentUserScore)
-		{
-			c.fillText(`Your Score: ${currentUserScore.score}`, canvas.width / 2, canvas.height - 60);
-			c.fillText(`Your Ranking: ${currentUserRanking}`, canvas.width / 2, canvas.height - 30);
-		}
+	leaderboardModal.style.display = "block";
 }
-
 
 
 let obstacles = [];
@@ -493,6 +479,7 @@ howToButton.addEventListener('click', () =>
 {
 	modal.style.display = "block"; // Show the modal when the how to button is clicked
 });
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function ()
 	{
@@ -505,6 +492,10 @@ window.onclick = function (event)
 		if (event.target === modal)
 			{
 				modal.style.display = "none";
+			}
+		else if (event.target === leaderboardModal)
+			{
+				leaderboardModal.style.display = "none";
 			}
 	}
 
@@ -520,11 +511,17 @@ function playerJump(){
 		}
 }
 
-leaderboardButton.addEventListener('click', () =>
+// When the user clicks on the leaderboard button, display the leaderboard
+leaderboardButton.addEventListener('click',  () =>
 {
-	gameOverMenu.style.display = "none"; // hide gameOver menu when leaderboard button is clicked
 	displayLeaderboard();
 });
+
+closeLeaderboardButton.addEventListener('click', () =>
+{
+	leaderboardModal.style.display = "none";
+});
+
 
 // Add an event listener for mouse clicks on the canvas
 canvas.addEventListener('click', () =>
@@ -542,3 +539,4 @@ window.addEventListener('keydown', (event) =>{
 		playerJump();
 	}
 })
+
