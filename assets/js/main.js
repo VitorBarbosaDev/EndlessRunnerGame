@@ -11,7 +11,7 @@ const restartButton = document.getElementById("restart-button");
 const leaderboardButton = document.getElementById("leaderboard-button");
 const playerNameInput = document.getElementById('player-name');
 const leaderboardModal       = document.getElementById("myleaderboard");
-const closeLeaderboardButton = document.getElementsByClassName('close')[1];
+let closeLeaderboardButton = document.getElementById("leaderboard-close");
 
 let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
@@ -107,12 +107,13 @@ class Player
 		
 		if (!gameStarted)
 			{
-			gravity = 0;
-			player.velocity.y = 0;
+				gravity           = 0;
+				player.velocity.y = 0;
 			}
-		else{
-			gravity = defaultGravity;
-		}
+		else
+			{
+				gravity = defaultGravity;
+			}
 		
 		//check if player is at the top of the canvas
 		if (this.position.y <= 0)
@@ -128,7 +129,7 @@ class Player
 		//check if player is below the canvas
 		if (this.position.y + this.height > canvas.height)
 			{
-				gameOver();
+				gameOver().catch(error => console.error("Error in gameOver: ", error));
 			}
 	}
 	
@@ -140,7 +141,7 @@ class Player
 			this.position.y < obstacle.position.y + obstacle.height &&
 			this.position.y + this.height > obstacle.position.y && gameStarted)
 			{
-				gameOver();
+				gameOver().catch(error => console.error("Error in gameOver: ", error));
 			}
 		else if (this.position.x > obstacle.position.x + obstacle.width && gameStarted)
 			{
@@ -263,21 +264,20 @@ function startCountdown()
 	                                    }, 1000);
 }
 
-
-function gameOver()
+let topScores = null;
+let currentGameScore = 0;
+async function gameOver()
 {
-	addPlayerScore(playerNameInput.value, score); 
+	await addPlayerScore (playerNameInput.value, score);
 	
 	gameOverMenu.style.display = "flex";
 	gameStarted                = false;
-	
-	gameOverScore.innerHTML = score;
+	currentGameScore		   = score;
+	gameOverScore.innerHTML = currentGameScore;
 	score                   = 0; // reset score after game over
-	getScores().then(scores =>
-	                     {
-	                     // do something with scores
-	                     console.log(scores);
-	                     });
+	topScores               = await getScores(); // fetch scores and store them in topScores
+	
+	console.log(topScores);
 }
 
 
@@ -301,16 +301,15 @@ async function getScores()
 }
 
 
-async function displayLeaderboard()
+function displayLeaderboard()
 {
-	const topScores              = await getScores();
 	const leaderboardContent     = leaderboardModal.querySelector('.modal-content');
 	leaderboardContent.innerHTML = `
-        <div class="modal-header">
-            <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
-            <span class="close">&times;</span>
-        </div>
-    `;
+    <div class="modal-header">
+      <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
+      <span class="close">&times;</span>
+    </div>
+  `;
 	topScores.forEach((score, index) =>
 	                  {
 		                  leaderboardContent.innerHTML += `<p>${index + 1}. ${score.name}: ${score.score}</p>`;
@@ -517,10 +516,10 @@ leaderboardButton.addEventListener('click',  () =>
 	displayLeaderboard();
 });
 
-closeLeaderboardButton.addEventListener('click', () =>
-{
-	leaderboardModal.style.display = "none";
-});
+closeLeaderboardButton.onclick = function ()
+	{
+		leaderboardModal.style.display = "none";
+	}
 
 
 // Add an event listener for mouse clicks on the canvas
