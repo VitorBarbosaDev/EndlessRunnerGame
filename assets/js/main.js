@@ -12,14 +12,18 @@ const leaderboardButton = document.getElementById("leaderboard-button");
 const playerNameInput = document.getElementById('player-name');
 const leaderboardModal       = document.getElementById("myleaderboard");
 let closeLeaderboardButton = document.getElementById("leaderboard-close");
-
+const fullscreenButton = document.getElementById("fullscreen-button");
 let countdownNumber = 3;  // 3 seconds countdown
 // Get the 2D rendering context for the canvas
 const c = canvas.getContext('2d');
 
 // Set the canvas width and height to match the window's inner width and height
-canvas.width  = 1024;
-canvas.height = 576;
+canvas.width  = Math.min(window.innerWidth, 1024);
+canvas.height = Math.min(window.innerHeight, 576);
+
+// Responsive text sizes
+let baseFontSize = Math.sqrt(canvas.width * canvas.height) / 20;  
+
 
 import {firebaseConfig} from './secrets.js';
 
@@ -73,10 +77,10 @@ class Player
 	constructor()
 	{
 		// Initialize the player's position, velocity, dimensions, and color
-		this.position = {x: 100, y: 100};
+		this.position = {x: canvas.width * 0.1, y: canvas.height * 0.5};
 		this.velocity = {x: 0, y: 0};
-		this.width    = 30;
-		this.height   = 30;
+		this.width    = Math.max(canvas.width * 0.01, 30);
+		this.height   = Math.max(canvas.height * 0.01, 30);
 		this.color    = 'blue';
 	}
 	
@@ -161,7 +165,7 @@ class GenericObject
 	{
 		this.position = {x: x, y: y};
 		this.color    = color;
-		this.width    = width;
+		this.width = Math.max(canvas.width * 0.02, 100); // Adjust the width here
 		this.height   = height;
 		this.velocity = velocity || 0;
 	}
@@ -208,16 +212,15 @@ class Obstacle extends GenericObject
 		if (gameStarted)
 			{
 				const delta = deltaTime / 1000;
-				
 				this.position.x -= this.velocity * obstacleSpeed * delta;
-				if (this.position.x < -this.width -obstacleDistance/2.5)
+				if (this.position.x < -this.width - obstacleDistance / 2.5)
 					{
 						this.position.x = canvas.width;
-						obstacleSpeed += .02;
+						obstacleSpeed += 0.02;
 						score += 50;
 						if (this.type === ObstacleType.TOP)
 							{
-								this.height = Math.random() * (375 - 120) + 120;
+								this.height = Math.random() * (canvas.height * 0.5 - canvas.height * 0.2) + canvas.height * 0.2;
 							}
 						else if (this.type === ObstacleType.BOTTOM)
 							{
@@ -236,8 +239,8 @@ class Obstacle extends GenericObject
 			}
 		this.draw();
 	}
-	
 }
+
 
 let countdownDisplay = "";  // A global variable for the countdown display
 
@@ -347,15 +350,20 @@ function resetGame()
 	obstacles       = [];
 	obstacleSpeed   = 1;
 	score           = 0;
-	player.position = {x: 200, y: 250};
+	player.position = {x: canvas.width * 0.1, y: canvas.height * 0.5};
 	gameStarted     = false;
 	startMenu.style.display = "flex"; // Show the start menu when the game is not started
 	
+	// Determine the number of obstacles based on canvas width
+	let numObstacles  = Math.floor(canvas.width / 300); // One pair of obstacles every 300 pixels
 	
-	// Creating four pairs of obstacles
-	for (let i = 0; i < 4; i++)
+	
+	
+	// Creating responsive obstacles +1 to make sure there is always an obstacle on the screen
+	for (let i = 0; i < numObstacles + 1; i++)
 		{
-			const randomHeight = Math.random() * (300 - 130) + 130;
+			// Make the height of the obstacle responsive to the canvas height
+			const randomHeight = Math.random() * (canvas.height * 0.5 - canvas.height * 0.2) + canvas.height * 0.2;
 			
 			obstacles.push(
 				new Obstacle({
@@ -382,25 +390,23 @@ function resetGame()
 }
 
 
-function displayFps(){
+function displayFps()
+{
 	// FPS
 	let now      = performance.now();
 	let duration = (now - lastTime) / 1000;
-	
-	lastTime = now;
-	
-	let fps = Math.round(1 / duration);
-	
+	lastTime     = now;
+	let fps      = Math.round(1 / duration);
 	// FPS Display
-	c.font      = "20px Arial";
-	c.fillStyle = "black";
+	c.font       = baseFontSize * 0.4 + "px Arial";  // Make the font size responsive
+	c.fillStyle  = "black";
 	c.fillText("FPS: " + fps, 100, 50);
-	
 }
 
-function displayScore(){
+function displayScore()
+{
 	// Score Display
-	c.font      = "30px Arial";
+	c.font      = baseFontSize * 0.6 + "px Arial";  // Make the font size responsive
 	c.fillStyle = "black";
 	c.textAlign = "center";  // This will center the text based on the position provided.
 	c.fillText("Score: " + score, canvas.width / 2, 50);
@@ -480,6 +486,27 @@ function playGame(){
 	canvas.focus(); // Set focus on the canvas
 }
 
+// Full-screen support
+function toggleFullScreen()
+{
+	if (!document.fullscreenElement)
+		{
+			document.documentElement.requestFullscreen();
+		}
+	else
+		{
+			if (document.exitFullscreen)
+				{
+					document.exitFullscreen();
+				}
+		}
+}
+
+// Full-screen button event listener
+fullscreenButton.addEventListener('click', toggleFullScreen);
+
+
+
 playButton.addEventListener('click', () =>
 {
 	playGame();
@@ -550,4 +577,35 @@ window.addEventListener('keydown', (event) =>{
 		playerJump();
 	}
 })
+
+// Listen for fullscreen change and resize the canvas
+document.addEventListener('fullscreenchange', adjustPositions);
+window.addEventListener('resize', adjustPositions);
+
+function adjustPositions()
+{
+	canvas.width  = window.innerWidth;
+	canvas.height = window.innerHeight;
+	baseFontSize  = Math.sqrt(canvas.width * canvas.height) / 20;  // Recalculate base font size when the canvas size changes
+	
+	// Adjust player's position
+	player.position = {x: canvas.width * 0.6, y: canvas.height * 0.5};
+	
+	// Adjust obstacles' positions
+	obstacles.forEach(obstacle =>
+	                  {
+		                  if (obstacle.position.x < player.position.x)
+			                  {
+				                  obstacle.position.x -= canvas.width * 0.2;
+			                  }
+		                  else
+			                  {
+				                  obstacle.position.x += canvas.width * 0.2;
+			                  }
+	                  });
+	
+	// Call resetGame() 
+	resetGame();
+}
+
 
