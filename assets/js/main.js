@@ -269,7 +269,7 @@ function startCountdown()
 
 let topScores = null;
 let currentGameScore = 0;
-
+let scoreSubmitted = false;
 async function gameOver()
 {
 	
@@ -278,19 +278,24 @@ async function gameOver()
 	gameStarted                = false;
 	currentGameScore           = score;
 	gameOverScore.innerHTML    = currentGameScore;
-	score = 0; // reset score after game over
+	score                      = 0; // reset score after game over
 	
 	//Firebase operations 
-	try
+	if (!scoreSubmitted)
 		{
-			await addPlayerScore(playerNameInput.value, currentGameScore);
-			topScores = await getScores(); // fetch scores and store them in topScores
-			console.log(topScores);
+			try
+				{
+					scoreSubmitted = true;
+					await addPlayerScore(playerNameInput.value, currentGameScore);
+					topScores = await getScores(); // fetch scores and store them in topScores
+					console.log(topScores);
+				}
+			catch (error)
+				{
+					console.error("Firebase error:", error);
+				}
 		}
-	catch (error)
-		{
-			console.error("Firebase error:", error);
-		}
+
 	
 	
 }
@@ -352,6 +357,7 @@ function resetGame()
 	score           = 0;
 	player.position = {x: canvas.width * 0.1, y: canvas.height * 0.5};
 	gameStarted     = false;
+	scoreSubmitted = false; // Reset the score submission state
 	startMenu.style.display = "flex"; // Show the start menu when the game is not started
 	
 	// Determine the number of obstacles based on canvas width
