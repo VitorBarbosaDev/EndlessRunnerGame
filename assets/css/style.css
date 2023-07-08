@@ -199,6 +199,9 @@ body {
 	cursor          : pointer;
 }
 
+#leaderboard-close {
+	z-index : 20;
+}
 
 #game-over {
 	position         : absolute;
