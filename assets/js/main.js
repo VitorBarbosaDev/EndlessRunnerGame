@@ -266,18 +266,30 @@ function startCountdown()
 
 let topScores = null;
 let currentGameScore = 0;
+
 async function gameOver()
 {
-	await addPlayerScore (playerNameInput.value, score);
+	
 	
 	gameOverMenu.style.display = "flex";
 	gameStarted                = false;
-	currentGameScore		   = score;
-	gameOverScore.innerHTML = currentGameScore;
-	score                   = 0; // reset score after game over
-	topScores               = await getScores(); // fetch scores and store them in topScores
+	currentGameScore           = score;
+	gameOverScore.innerHTML    = currentGameScore;
+	score = 0; // reset score after game over
 	
-	console.log(topScores);
+	//Firebase operations 
+	try
+		{
+			await addPlayerScore(playerNameInput.value, currentGameScore);
+			topScores = await getScores(); // fetch scores and store them in topScores
+			console.log(topScores);
+		}
+	catch (error)
+		{
+			console.error("Firebase error:", error);
+		}
+	
+	
 }
 
 
