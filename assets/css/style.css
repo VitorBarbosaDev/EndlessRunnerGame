@@ -9,6 +9,8 @@
 canvas {
 	display : block;
 	border  : #333333 1px solid;
+	width  : 100%;
+	height : 100%;
 }
 
 /* Set the body background to a linear gradient, center its content and apply default font */
@@ -20,6 +22,9 @@ body {
 	height          : 100vh; /* Full viewport height */
 	font-family     : Arial, sans-serif; /* Default font for the whole page */
 	color           : #333; /* Default text color */
+	overflow : hidden; /* Prevent scrollbars */
+	position : relative; /* Establish a positioning context for the canvas */
+
 }
 
 /* Set the start menu to display as a flex container and style it */
@@ -129,6 +134,21 @@ body {
 	right: 10px;
 	z-index: 20;
 }
+
+/* Set the media query to set a max size for larger screens */
+@media screen and (min-width : 1024px) {
+	canvas {
+		/* Center the canvas in the middle of the screen */
+		position   : absolute;
+		top        : 50%;
+		left       : 50%;
+		transform  : translate(-50%, -50%);
+		/* Set a maximum size for the canvas */
+		max-width  : 1024px;
+		max-height : 576px;
+	}
+}
+
 
 @media (max-width : 900px) {
 	#fullscreen-button {
