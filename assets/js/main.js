@@ -417,6 +417,52 @@ function displayScore()
 	c.textAlign = "center";  // This will center the text based on the position provided.
 	c.fillText("Score: " + score, canvas.width / 2, 50);
 }
+let passFirstObject = false;
+let firstObstacle = null;
+function drawWarningMarker()
+{
+
+	if(!firstObstacle)
+		{
+			for (let i = 0; i < obstacles.length; i++)
+				{
+					if (obstacles[i].position.x + obstacles[i].width > player.position.x)
+						{
+							firstObstacle = obstacles[i];
+							break;
+						}
+				}
+		}
+	
+	if (firstObstacle)
+		{
+			let markerPositionX = Math.min(firstObstacle.position.x, canvas.width - 40);
+			
+			let firstPair           = obstacles.filter(obstacle => obstacle.position.x === firstObstacle.position.x);
+			let firstTopObstacle    = firstPair.find(obstacle => obstacle.type === ObstacleType.TOP);
+			let firstBottomObstacle = firstPair.find(obstacle => obstacle.type === ObstacleType.BOTTOM);
+			let gapCenter           = firstTopObstacle.height + (firstBottomObstacle.position.y - firstTopObstacle.height) / 2;
+			
+			
+			// Only draw the marker if the player has not passed the first obstacle
+			if (!passFirstObject)
+				{
+					c.save();
+					c.translate(markerPositionX, gapCenter);
+					c.rotate(Math.PI / 2); // Rotate 90 degrees to the right
+					
+					c.fillStyle = 'red';
+					c.beginPath();
+					c.moveTo(0, -30); // Adjust these values to make the marker bigger
+					c.lineTo(30, 30); // Adjust these values to make the marker bigger
+					c.lineTo(-30, 30); // Adjust these values to make the marker bigger
+					c.closePath();
+					c.fill();
+					
+					c.restore();
+				}
+		}
+}
 
 
 let fps = 60;
@@ -464,6 +510,10 @@ function animate(time = 0)
 				}
 			c.fillText(countdownDisplay, canvas.width / 2, canvas.height / 2);
 		}
+	
+	if(gameStarted){
+		drawWarningMarker();
+	}
 	
 	displayFps();
 	
