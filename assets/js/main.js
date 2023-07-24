@@ -22,8 +22,9 @@ canvas.width  = Math.min(window.innerWidth, 1024);
 canvas.height = Math.min(window.innerHeight, 576);
 
 // Responsive text sizes
-let baseFontSize = Math.sqrt(canvas.width * canvas.height) / 20;  
-
+let baseFontSize = Math.sqrt(canvas.width * canvas.height) / 20;
+let passFirstObject = false;
+let firstObstacle   = null;
 
 import {firebaseConfig} from './secrets.js';
 
@@ -218,6 +219,8 @@ class Obstacle extends GenericObject
 						this.position.x = canvas.width;
 						obstacleSpeed += 0.02;
 						score += 50;
+						passFirstObject = true;
+						
 						if (this.type === ObstacleType.TOP)
 							{
 								this.height = Math.random() * (canvas.height * 0.5 - canvas.height * 0.2) + canvas.height * 0.2;
@@ -279,6 +282,7 @@ async function gameOver()
 	currentGameScore           = score;
 	gameOverScore.innerHTML    = currentGameScore;
 	score                      = 0; // reset score after game over
+	
 	
 	//Firebase operations 
 	if (!scoreSubmitted)
@@ -359,6 +363,8 @@ function resetGame()
 	gameStarted     = false;
 	scoreSubmitted = false; // Reset the score submission state
 	startMenu.style.display = "flex"; // Show the start menu when the game is not started
+	passFirstObject = false;
+	firstObstacle   = null;
 	
 	// Determine the number of obstacles based on canvas width
 	let numObstacles  = Math.floor(canvas.width / 300); // One pair of obstacles every 300 pixels
@@ -417,8 +423,7 @@ function displayScore()
 	c.textAlign = "center";  // This will center the text based on the position provided.
 	c.fillText("Score: " + score, canvas.width / 2, 50);
 }
-let passFirstObject = false;
-let firstObstacle = null;
+
 function drawWarningMarker()
 {
 
