@@ -21,6 +21,9 @@ const c = canvas.getContext('2d');
 canvas.width  = Math.min(window.innerWidth, 1024);
 canvas.height = Math.min(window.innerHeight, 576);
 
+const resizeEvent = new Event('resize');
+window.dispatchEvent(resizeEvent);
+
 // Responsive text sizes
 let baseFontSize = Math.sqrt(canvas.width * canvas.height) / 20;
 let passFirstObject = false;
