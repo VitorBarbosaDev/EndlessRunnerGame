@@ -621,7 +621,7 @@ function playerJump(){
 		}
 }
 
-window.dispatchEvent(resizeEvent);
+
 
 // When the user clicks on the leaderboard button, display the leaderboard
 leaderboardButton.addEventListener('click',  () =>
@@ -658,9 +658,11 @@ window.addEventListener('keydown', (event) =>{
 	}
 })
 
+adjustPositions();  // Call adjustPositions() to adjust the positions of the player and obstacles when the game starts  (This is needed for the responsive design)
 // Listen for fullscreen change and resize the canvas
 document.addEventListener('fullscreenchange', adjustPositions);
 window.addEventListener('resize', adjustPositions);
+
 
 function adjustPositions()
 {
