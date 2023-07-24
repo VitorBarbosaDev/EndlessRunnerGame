@@ -329,16 +329,22 @@ function displayLeaderboard()
 {
 	const leaderboardContent     = leaderboardModal.querySelector('.modal-content');
 	leaderboardContent.innerHTML = `
-    <div class="modal-header">
-      <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
-      <span class="close">&times;</span>
-    </div>
-  `;
+        <div class="modal-header">
+            <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
+            <span class="close" id="closeLeader">&times;</span>
+        </div>
+    `;
 	topScores.forEach((score, index) =>
 	                  {
 		                  leaderboardContent.innerHTML += `<p>${index + 1}. ${score.name}: ${score.score}</p>`;
 	                  });
+	
 	leaderboardModal.style.display = "block";
+	closeLeaderboardButton         = document.getElementById("closeLeader"); // Move this line here
+	closeLeaderboardButton.onclick = function ()
+		{
+			leaderboardModal.style.display = "none";
+		};
 }
 
 
@@ -627,6 +633,12 @@ canvas.addEventListener('click', () =>
 {
 	playerJump();
 });
+
+canvas.addEventListener('touchstart', () =>
+{
+	playerJump();
+});
+
 
 window.addEventListener('keydown', (event) =>{
 	
