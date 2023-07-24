@@ -1,3 +1,5 @@
+
+// This is the main JavaScript file for the game
 // Select the canvas element from the HTML document
 const canvas = document.querySelector('canvas');
 const startMenu   = document.getElementById('start-menu');
@@ -618,6 +620,8 @@ function playerJump(){
 			player.velocity.y = 0;
 		}
 }
+
+window.dispatchEvent(resizeEvent);
 
 // When the user clicks on the leaderboard button, display the leaderboard
 leaderboardButton.addEventListener('click',  () =>
