@@ -408,14 +408,18 @@ function displayLeaderboard()
             <h1>Here are the Top Scores <i class="fa-solid fa-gamepad"></i></h1>
             <span class="close" id="closeLeader">&times;</span>
         </div>
+        <div class="leaderboard-container"> <!-- Add a container for the leaderboard content -->
+            <!--  leaderboard content goes here -->
+        </div>
     `;
+	
 	topScores.forEach((score, index) =>
 	                  {
-		                  leaderboardContent.innerHTML += `<p>${index + 1}. ${score.name}: ${score.score}</p>`;
+		                  leaderboardContent.querySelector('.leaderboard-container').innerHTML += `<p>${index + 1}. ${score.name}: ${score.score}</p>`;
 	                  });
 	
 	leaderboardModal.style.display = "block";
-	closeLeaderboardButton         = document.getElementById("closeLeader"); // Move this line here
+	closeLeaderboardButton         = document.getElementById("closeLeader");  // Get the close button again after the modal content has been updated
 	closeLeaderboardButton.onclick = function ()
 		{
 			leaderboardModal.style.display = "none";
@@ -722,15 +726,28 @@ closeLeaderboardButton.onclick = function ()
 	}
 
 
-// Add an event listener for mouse clicks on the canvas
-canvas.addEventListener('click', () =>
-{
-	playerJump();
-});
 
+//  keep track of whether the jump sound was played after a touch event
+let jumpSoundPlayedAfterTouch = false;
+
+// When the user clicks on the canvas or performs a touchstart event
+function handleTap()
+{
+	if (!jumpSoundPlayedAfterTouch)
+		{
+			playerJump(); // Perform the jump action
+		}
+	jumpSoundPlayedAfterTouch = false; // Reset the flag after the action
+}
+
+// Add an event listener for mouse clicks on the canvas
+canvas.addEventListener('click', handleTap);
+
+// Add an event listener for touchstart on the canvas
 canvas.addEventListener('touchstart', () =>
 {
-	playerJump();
+	jumpSoundPlayedAfterTouch = true;
+	handleTap();
 });
 
 
