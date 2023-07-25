@@ -56,14 +56,68 @@ const jumpSound       = document.getElementById("jumpSound");
 const dieSound        = document.getElementById("dieSound");
 const backgroundMusic = document.getElementById("backgroundMusic");
 
-jumpSound.volume      = 0.2;
+
+// Set the volume for the audio elements
+let jumpsoundvolume = 0.5;
+let diesoundvolume = 0.5;
+let backgroundmusicvolume = 0.3;
+
+jumpSound.volume  = 0;
+dieSound.volume =  0;
+backgroundMusic.volume = 0;
+
+// the timers and flags
+let jumpSoundCooldown = 100; // 100 milliseconds (0.1 seconds) cooldown for jump sound
+let canPlayJumpSound  = true;
+let canPlayDieSound   = true;
 
 // Function to play jump sound
 function playJumpSound()
 {
-	jumpSound.currentTime = 0; // Rewind to the beginning of the sound
-	jumpSound.play();
+	if (canPlayJumpSound)
+		{
+			jumpSound.currentTime = 0; // Rewind to the beginning of the sound
+			jumpSound.play();
+			canPlayJumpSound = false; // Set the flag to prevent the sound from being played again immediately
+			setTimeout(() =>
+			           {
+				           canPlayJumpSound = true; // Reset the flag after the cooldown
+			           }, jumpSoundCooldown);
+		}
 }
+
+// Function to play die sound
+function playDieSound()
+{
+	if (canPlayDieSound)
+		{
+			dieSound.currentTime = 0; // Rewind to the beginning of the sound
+			dieSound.play();
+			canPlayDieSound = false; // Set the flag to prevent the sound from being played again immediately
+		}
+}
+
+// Function to play background music
+function playBackgroundMusic()
+{
+	backgroundMusic.currentTime = 0; // Rewind to the beginning of the sound
+	backgroundMusic.play();
+}
+
+// Create an array of all your sound assets
+let soundAssets = [jumpSound, backgroundMusic, dieSound];
+
+// Create a promise for each sound asset that resolves when the sound loads
+let soundPromises = soundAssets.map(sound =>
+                                    {
+	                                    return new Promise((resolve, reject) =>
+	                                                       {
+		                                                       sound.oncanplaythrough = resolve;
+		                                                       sound.onerror          = reject;
+	                                                       });
+                                    });
+
+
 
 
 async function addPlayerScore(name,score)
@@ -166,6 +220,7 @@ class Player
 			this.position.y < obstacle.position.y + obstacle.height &&
 			this.position.y + this.height > obstacle.position.y && gameStarted)
 			{
+				// Player collided with the obstacle, end the game
 				gameOver().catch(error => console.error("Error in gameOver: ", error));
 			}
 		else if (this.position.x > obstacle.position.x + obstacle.width && gameStarted)
@@ -296,7 +351,7 @@ let scoreSubmitted = false;
 async function gameOver()
 {
 	
-	
+	playDieSound();
 	gameOverMenu.style.display = "flex";
 	gameStarted                = false;
 	currentGameScore           = score;
@@ -377,7 +432,21 @@ const player = new Player();
 
 player.update();
 
-resetGame();
+
+
+// Wait for all the sound assets to load before starting the game
+Promise.all(soundPromises)
+       .then(() =>
+             {
+	             // All sound assets have loaded, start the game
+	             resetGame();
+				 
+             })
+       .catch(error =>
+              {
+	              // An error occurred while loading the images
+	              console.error("An error occurred while loading the sound assets: ", error);
+              });
 
 
 function resetGame()
@@ -392,6 +461,7 @@ function resetGame()
 	passFirstObject = false;
 	firstObstacle   = null;
 	
+	playBackgroundMusic();
 	// Determine the number of obstacles based on canvas width
 	let numObstacles  = Math.floor(canvas.width / 300); // One pair of obstacles every 300 pixels
 	
@@ -571,6 +641,7 @@ function playGame(){
 	startMenu.style.display = "none"; // Hide the start menu when the play button is clicked
 	startCountdown();  // Start countdown
 	canvas.focus(); // Set focus on the canvas
+	canPlayDieSound = true; // Reset the flag for playing the die sound
 }
 
 // Full-screen support
@@ -706,4 +777,38 @@ function adjustPositions()
 	resetGame();
 }
 
+
+
+// Mute button event listener
+const muteButton = document.getElementById('muteButton');
+muteButton.innerText = 'Unmute';
+muteButton.addEventListener('click', () =>
+{
+	if (backgroundMusic.volume === 0)
+		{
+			// Unmute
+			backgroundMusic.volume = backgroundmusicvolume;
+			dieSound.volume = diesoundvolume;
+			jumpSound.volume = jumpsoundvolume;
+			muteButton.innerText   = 'Mute';
+			// Resume playing the background music and set it to loop
+			if (gameStarted)
+				{
+					backgroundMusic.loop = true;
+					playBackgroundMusic();
+				}
+		}
+	else
+		{
+			// Mute
+			backgroundMusic.volume = 0;
+			dieSound.volume  = 0;
+			jumpSound.volume = 0;
+			muteButton.innerText   = 'Unmute';
+			
+			// Pause the background music when muting
+			backgroundMusic.pause();
+			backgroundMusic.loop = false;
+		}
+});
 
