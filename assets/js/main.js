@@ -699,16 +699,23 @@ window.onclick = function (event)
 			}
 	}
 
-function playerJump(){
-	if (player.position.y > 30)
+// Variable to store the timestamp of the last jump
+let lastJumpTimestamp = 0;
+
+function playerJump()
+{
+	// Get the current timestamp
+	const currentTimestamp = performance.now();
+	
+	// Check if enough time has passed since the last jump
+	if (currentTimestamp - lastJumpTimestamp > 100)
 		{
 			// Jump
 			player.velocity.y = -300;
 			playJumpSound();
-		}
-	else
-		{
-			player.velocity.y = 0;
+			
+			// Update the last jump timestamp to the current time
+			lastJumpTimestamp = currentTimestamp;
 		}
 }
 
