@@ -66,7 +66,7 @@ body {
 	z-index          : 1; /* Stack order */
 	padding-top      : 100px; /* Top padding */
 	width            : 100%; /* Full width */
-	height           : 100%; /* Half viewport height */
+	height           : 100%; /* Full viewport height */
 	overflow         : auto; /* Enable scroll if needed */
 	background-color : rgba(0, 0, 0, 0.4); /* Black with opacity */
 }
