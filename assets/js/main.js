@@ -51,6 +51,21 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+// Import the audio elements from the HTML
+const jumpSound       = document.getElementById("jumpSound");
+const dieSound        = document.getElementById("dieSound");
+const backgroundMusic = document.getElementById("backgroundMusic");
+
+jumpSound.volume      = 0.2;
+
+// Function to play jump sound
+function playJumpSound()
+{
+	jumpSound.currentTime = 0; // Rewind to the beginning of the sound
+	jumpSound.play();
+}
+
+
 async function addPlayerScore(name,score)
 {
 	const playerName = playerNameInput.value || "Anonymous";
@@ -440,11 +455,11 @@ function drawWarningMarker()
 
 	if(!firstObstacle)
 		{
-			for (let i = 0; i < obstacles.length; i++)
+			for (const element of obstacles)
 				{
-					if (obstacles[i].position.x + obstacles[i].width > player.position.x)
+					if (element.position.x + element.width > player.position.x)
 						{
-							firstObstacle = obstacles[i];
+							firstObstacle = element;
 							break;
 						}
 				}
@@ -530,8 +545,8 @@ function animate(time = 0)
 	if(gameStarted){
 		drawWarningMarker();
 	}
-	
-	displayFps();
+	//Fps for testing purposes
+//	displayFps();
 	
 	displayScore()
 	
@@ -614,6 +629,7 @@ function playerJump(){
 		{
 			// Jump
 			player.velocity.y = -300;
+			playJumpSound();
 		}
 	else
 		{

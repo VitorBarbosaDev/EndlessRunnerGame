@@ -10,6 +10,7 @@ canvas {
 	display : block;
 	border  : #333333 1px solid;
 	height : 100%;
+	
 }
 
 /* Set the body background to a linear gradient, center its content and apply default font */
@@ -65,7 +66,7 @@ body {
 	z-index          : 1; /* Stack order */
 	padding-top      : 100px; /* Top padding */
 	width            : 100%; /* Full width */
-	height           : 50%; /* Half viewport height */
+	height           : 100%; /* Half viewport height */
 	overflow         : auto; /* Enable scroll if needed */
 	background-color : rgba(0, 0, 0, 0.4); /* Black with opacity */
 }
@@ -87,7 +88,7 @@ body {
 
 /* Modal header styles */
 .modal-header {
-	display         : flex; /* Use flex layout for alignment */
+	display         : flex; /* flex layout for alignment */
 	justify-content : space-between; /* Distribute space evenly between content */
 	width           : 100%; /* Full width */
 }
@@ -146,6 +147,19 @@ body {
 		max-width  : 1024px;
 		max-height : 576px;
 	}
+}
+
+#muteButton {
+	position         : absolute;
+	top              : 10px;
+	left             : 10px;
+	background-color : #87ceeb; /* Background color */
+	border           : #333333 1px solid; /* Border color */
+	color            : #fff; /* Text color */
+	border-radius    : 5px; /* Rounded corners */
+	transition       : background-color 0.3s ease; /* Transition effect for hover */
+	cursor           : pointer; /* Change cursor on hover */
+	padding          : 10px 15px; /* Adjust the padding to make the button bigger */
 }
 
 
