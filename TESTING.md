@@ -29,10 +29,10 @@ Live Site: https://vitorbarbosadev.github.io/EndlessRunnerGame/
 
 ## AUTOMATED TESTING
 
-The Automated Testing includes all the testing that is carried out by a program, like W3C HTML validation.
+Automated Testing includes all the testing that is carried out by a program, like W3C HTML validation.
 
 ###  W3C Validator
-W3C was used to validate all pages and also the css.
+W3C was used to validate all pages and also the CSS.
 
 #### Results for Index.html
 ![image](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/4d16698b-4530-41a5-8ce3-2c264deb2e5f)
@@ -68,7 +68,7 @@ Wave was used to test the accessibility of each page
 - ![image](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/00efa76e-eba4-45a1-bc87-e84573866818)
 
 
-The I do seem to have a bit of a contrast issue with my buttons so changing these would probably be worth it in the future for better assibility.
+I do seem to have a bit of a contrast issue with my buttons so changing these would probably be worth it in the future for better assibility.
 
 
 ## MANUAL TESTING
@@ -80,18 +80,16 @@ The I do seem to have a bit of a contrast issue with my buttons so changing thes
 | :--- | :--- | :--- |
 | `First Time Visitors` |
 |  |  |  |
-| I want to play a game on the web | The website availble on the web and is responsive and adjusts to size of screen | [Multi_Display_Example](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/8950d572-a388-441f-aa08-5d328997a5bb) |
-| I want to learn how to play the game and what my goal is . | The game has a button that pops up a written tutorial. | [How To Play](![image](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/841a92a7-1731-4568-bdfa-90f8f9bcfdcf)
-) |
-| I want to easily tell what my score is. | Score top of screen always. | [Footer](assets/images/testingimages/testing-manual-testing-footer.png) |
+| I want to play a game on the web | The website available on the web and is responsive and adjusts to the size of the screen | [Multi_Display_Example](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/8950d572-a388-441f-aa08-5d328997a5bb) |
+| I want to learn how to play the game and what my goal is. | The game has a button that pops up a written tutorial. | [How To Play](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/841a92a7-1731-4568-bdfa-90f8f9bcfdcf)|
+| I want to easily tell what my score is. | Score at the top of the screen always. | [score](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/304b7e1c-b30e-4004-b460-cf8e8fc0b59f)|
 |`Returning Visitors`|
 |  |  |  |
-| I want to see if any new photos have been added to the gallery. | They can click on the gallery link and view any new photos there. | [Gallery Page](assets/images/testingimages/testing-manual-testing-gallery.png) |
-| I want to book another haircut. | They can click on the contact page. On that page, there is a link to Instagram where they can direct message, or a submission form that is locationed at the bottom of the contact page. | [Contact Page](assets/images/testingimages/testing-manual-testing-contact.png) |
-| I want to find social media links. | Social media links are in the footer on each page. | [Footer](assets/images/testingimages/testing-manual-testing-footer.png) |
-|`Frequent Visitor Goals` |
+| I want to try and beat my high score. | They can click on the Leaderboard button and scroll to find their last top score  | [Top scores](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/6c24c3e2-9f52-4247-bfbb-f5f32c31e9a4)|
+| I want to listen to the game sounds. | They can click the Mute button to turn sound on or off | [Mute Button](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/b522cdc5-dd13-4259-8f08-d184d9bac643) |
+| I want to play on my mobile instead of pc. | Responsive design allows players to put down the keyboard and jump on mobile |  [Multi_Display_Example](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/8950d572-a388-441f-aa08-5d328997a5bb) |
 |  |  |  |
-| I want to see what time the barber opens and the location. | There is a timesheet on the contact page so they can see the time there, along with a map to the location of the barber. | [Contact Page](assets/images/testingimages/testing-manual-testing-contact.png)  |
+| I want to few the leaderboard to see if my score is still top ten. | They can see their top scores on the leaderboard screen. | [Top scores](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/6c24c3e2-9f52-4247-bfbb-f5f32c31e9a4) |
 
 
 ### Full Testing
@@ -116,42 +114,29 @@ Each device tested the site using the following browsers:
 
 | Feature | Expected Outcome | Testing Performed | Result | Pass/Fail |
 | --- | --- | --- | --- | --- |
-| `Navbar` |
+| `Buttons` |
 |  |  |  |  |  |
-| Logo | When clicked, the user will be redirected to the home page. | Clicked Logo | Redirected to the home page. | Pass |
-| Home Page Link | When clicked, the user will be redirected to the home page.| Clicked link | Redirected to the home page. | Pass |
-| About Link | When clicked, the user will be redirected to the About page. | Clicked link | Redirected to the About page. | Pass |
-| Services Link | When clicked, the user will be redirected to the Services page. | Clicked link | Redirected to the Services page. | Pass |
-| Gallery Link | When clicked, the user will be redirected to the Gallery page. | Clicked link | Redirected to the Gallery page. | Pass |
-| Contact Link | When clicked, the user will be redirected to the Contact page. | Clicked link | Redirected to the Contact page. | Pass |
-| `Footer` |
+| Play Button| Request username if null | Clicked button | asked user to input a string. | Pass |
+| Play Button| Starts game if name input is not null.| Clicked button | Starts Game. | Pass |
+| Mute Button | When clicked changes string and mutes and unmutes. | Clicked button | Unmuted or muted and changed string to reflect. | Pass |
+| How to play Button | When clicked, pops up with a screen explaining how to play. | Clicked button | Shows how to play screen. | Pass |
+| Leaderboard Button| When clicked, pops up a leaderboard screen with multiple scores gathered from the Firebase database. | Clicked button | pops up with leaderboard screen and allows scroll. | Pass |
+| Fullscreen Button | When clicked, full screens the tab and also disappears on smaller screens. | Clicked button | full screens the tab and also disappears on smaller screens. | Pass |
+| Restart Button | When clicked, restarts game | Clicked button | restarts game. | Pass |
+| `Game Features` |
 |  |  |  |  |  |
-| Tiktok Button | When clicked, the user will be redirected to Guilherme's Tiktok page in a new tab. | Clicked button | Redirected to Guilherme's Tiktok page. | Pass |
-| Instagram Button |  When clicked, the user will be redirected to Guilherme's Instagram page in a new tab. | Clicked button | Redirected to Guilherme's Instagram page. | Pass |
-| `Home Page` |
+| Player Jump | When the screen is tapped, the space bar is pressed or clicked the screen player should jump. | Clicked screen, pressed spacebar and tapped screen | player jumps after all inputs. | Pass |
+| Sounds | All sounds should play correctly when actions are performed. | I unmuted, died and jumped | background song is playing, jump plays when jump and die plays when crash into the obstacle. | Pass |
+| Obstacles movement |  Obstacles should move to the other side of the screen and then reset to the right side | Played game | Obstacles move to one side and then appear on the other at the right time. | Pass |
+| Obstacles height |  Obstacles have random heights | played game | Obstacles have random heights. | Pass |
+| Score updates |  Score should update once player goes passed obstacles | played game | Score updates once a player goes past obstacles. | Pass |
+| Score update leaderboard |  Once the game is over send the score to the database | played game | Once the game is over score is sent to the database and viewable on the leaderboard screen. | Pass |
+| Pull leaderboard Scores |  Once the game is over scores are pulled from the database | played game |  Once the game is over scores are pulled from the database and viewable on the leaderboard screen. | Pass |
+| `screens` |
 |   |   |   |   |
-| Book Right Now | When clicked, the user will be redirected to the contact page. | Clicked link  | Redirected to the contact page. | Pass |
-| Review Photos are responsive | When hovered over, the picture grows larger. | Hovered over photo  | Image got larger and overlayed properly. | Pass |
-| Tiktok Section loads and plays video | When videos are hovered over, they start playing and once clicked, they open. | Hovered over and clicked | On click, was redirected to Tiktok page and on hover, allowed me to view the Tiktok clips. | Pass |
-| `About Page` |
+| Leaderboard Screen| Once open player should be able to close by clicking outside the screen or using the x button. | Clicked outside and x button  | closes correctly | Pass |
+| How to play Screen| Once open player should be able to close by clicking outside the screen or using the x button. | Clicked outside and x button  | closes correctly | Pass |
 |   |   |   |   |  |
-| Page layout Properly | The image goes to the left and text on right. | Loaded page | The image displays on the left and text on the right. | Pass |
-| `Services Page` |
-|   |   |   |   |  |
-| Page layout Properly | Table loaded in center. | Loaded page | Table loaded in center. | Pass |
-| `Gallery Page` |
-|   |   |   |   |  |
-| Load Images and lay them out in a column of three | Load Images and lay them out in a column of three. | Loaded page | Pages load and the images format into a column of three. | Pass |
-| `Contact Page` |
-| Page layout Properly | There should be a section on the left with "contact me on Instagram" section then on the right there is a map location and time. Below, a form should load.  | Loaded page | The Instagram section is located to the left and the map and time are located to the right. Below, the "book your cut" form appears. | Pass |
-| Instagram Button |  When clicked, the user will be redirected to Guilherme's Instagram page in a new tab. | Clicked button | Redirected to Guilherme's Instagram page.
-
-| Pass |
-| Form Validation | User should be unable to submit if first name, last name, email address, and a day isn't selected. | Didn't fill in each individual element then clicked on Book button. | Form submission gets rejected until all the required elements are filled in. | Pass |
-| Form Submission | User should be able to submit form and be redirected to the success page. | Clicked on Book button. | Form submits and user gets redirected to success page. | Pass |
-| `Success Page` |
-|   |   |   |   |   |
-| Home page link | Redirects the user to the home page. | Clicked link | Redirected to home page. | Pass |
 
  - - -
 
@@ -160,15 +145,17 @@ Each device tested the site using the following browsers:
 
 ### Known Bugs
 
-As far as I'm aware, there are currently no known bugs.
+Sometimes the resizing can be a bit funny and causes the game to restart.
 
 
 ### Solved Bugs
 
 | No | Bug | How I resolved the issue |
 | :--- | :--- | :--- |
-| 1 | The photo in the "Why Cut With Me" section had a lot of space on the right. | To fix this, I added a container on top of the image which allowed me to crop the right side of the image to look how I wanted it to. |
-| 2 | The format of the "About" page kept breaking between 752 - 500px. | In order to fix this, I needed to add additional media queries and adjusted the format for these resolutions. |
-| 3 | The format of the "Contact" page kept breaking between 1550px - 1200px. | In order to fix this, I needed to add additional media queries and adjusted the format for these resolutions. |
-| 4 | The header was causing certain pages to have a horizontal scroll. | In order to fix this, I needed to remove the padding that was present as this, combined with width:100%, was causing errors as the header would take up a bit more room than what it should. I also added a margin:0 auto; to then center the logo in the middle of the page. |
+| 1 | The player would double job if multiple inputs were inputted at the same time. | To fix this, I added a tiny time when a player can't jump again |
+| 2 | When the height and width of the canvas were set to 100%% canvas text would stretch | In order to fix this, I removed that CSS and made it so the text was responsive in js. |
+| 3 | The player could go above or below the canvas. | In order to fix this, I added a limit to stop the player from jumping too high and the player dies if he goes to the bottom. |
+| 4 | Players on mobile couldn't tell where the column was. | In order to fix this, I added a marker to make it a bit easier for them to predict. |
+| 5 | Game would run at different framerates depending on the device causing jumps and other variables to be different. | In order to fix this, I made the game time-dependent instead of frame rates so now the values I set feel the same everywhere. |
+| 6 | Making codes for Firebase a bit more secure. | In order to fix this, I added them to a different file and encrypted them so that while easily breakable they are no longer in plain text I also added rules to the database that only allows scores and names to be added. |
 
