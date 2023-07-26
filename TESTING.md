@@ -46,7 +46,7 @@ W3C was used to validate all pages and also the CSS.
 
 
 ### Lighthouse
-Lighthouse was used to on all pages below are the results
+Lighthouse was used on the page below are the results
 #### Desktop Testing
 
 #### Results for Index.html
@@ -62,13 +62,13 @@ Lighthouse was used to on all pages below are the results
 
 
 ### WAVE
-Wave was used to test the accessibility of each page 
+Wave was used to test the accessibility of the page 
 
 #### Results for Index.html
 - ![image](https://github.com/VitorBarbosaDev/EndlessRunnerGame/assets/46977318/00efa76e-eba4-45a1-bc87-e84573866818)
 
 
-I do seem to have a bit of a contrast issue with my buttons so changing these would probably be worth it in the future for better assibility.
+I do seem to have a bit of a contrast issue with my buttons so changing these would probably be worth it in the future for better accessibility.
 
 
 ## MANUAL TESTING
